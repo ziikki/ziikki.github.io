@@ -21,14 +21,14 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"ziikki.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+    var CONFIG = {"hostname":"ziikki.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="Have Fun in Life. Code. Tech. Cats. I am also growing strawberry.">
+<meta name="description" content="Have Fun in Life. Code. Tech. Cats.  I am also growing strawberry.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ziikki&#39;s Walnut Shell">
 <meta property="og:url" content="http://ziikki.com/archives/2018/03/index.html">
 <meta property="og:site_name" content="Ziikki&#39;s Walnut Shell">
-<meta property="og:description" content="Have Fun in Life. Code. Tech. Cats. I am also growing strawberry.">
+<meta property="og:description" content="Have Fun in Life. Code. Tech. Cats.  I am also growing strawberry.">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="Zikki">
 <meta name="twitter:card" content="summary">
@@ -150,8 +150,10 @@
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zikki"
+      src="/images/avatar.png">
   <p class="site-author-name" itemprop="name">Zikki</p>
-  <div class="site-description" itemprop="description">Have Fun in Life. Code. Tech. Cats. I am also growing strawberry.</div>
+  <div class="site-description" itemprop="description">Have Fun in Life. Code. Tech. Cats. <br> I am also growing strawberry.</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
@@ -167,6 +169,17 @@
       </div>
   </nav>
 </div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/ziikki" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;ziikki" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/zike.qin" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;zike.qin" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i>Instagram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/zikeqin@" title="Clubhouse → zikeqin@"><i class="fas fa-microphone-alt fa-fw"></i>Clubhouse</a>
+      </span>
+  </div>
 
 
 
@@ -284,14 +297,14 @@
 
 
 <div class="copyright">
-  &copy; 
+  &copy; 2017 – 
   <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Zikki</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
   </div>
 
     </div>
@@ -313,6 +326,17 @@
 
 
 
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ziikki.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
 
 </body>
 </html>
