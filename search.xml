@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>TalkingData_AdTracking_Fraud_Detection_Challenge</title>
+    <url>/posts/TalkingData-AdTracking-Fraud-Detection-Challenge/</url>
+    <content><![CDATA[<p class="description"></p>
+
+<p><a href="https://www.kaggle.com/c/talkingdata-adtracking-fraud-detection">Kaggle Link</a></p>
+<p>I joined a public kaggle competition with two teammates, and in the report is what we learned from it!</p>
+<p><img src="/images/kaggle/leaderboard.png" alt="Screenshot for leaderboard scores"></p>
+<p><a href="/files/ece-681-final-report.pdf">Report</a></p>
+]]></content>
+      <tags>
+        <tag>Machine Learning, Kaggle, Classification</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Calculate Receptive Field for VGG16</title>
+    <url>/posts/calculate-receptive-field-for-vgg-16/</url>
+    <content><![CDATA[<p class="description">Calculate Receptive Field for Vgg-16 and potentially other nerual networks. Python code is provided along with a clear graph explaining the vgg16 structure.</p>
+
+<p><img src="/images/cnn/vgg-16-receptive-field.png" alt="vgg16"></p>
+<a id="more"></a>
+
+<h2 id="What-is-Receptive-Field-and-How-do-we-calculate"><a href="#What-is-Receptive-Field-and-How-do-we-calculate" class="headerlink" title="What is Receptive Field and How do we calculate?"></a>What is Receptive Field and How do we calculate?</h2><p>BackGround Quote: (feel free to skip if you don’t want to read)</p>
+<blockquote>
+<p>To understand how components in a CNN depend on components in the layers before it, and in particular on components of the input. Since CNNs can incorporate blocks that perform complex operations …, this information is generally available only at “run time” and cannot be uniquely determined given only the structure of the network. Furthermore, blocks can implement complex operations that are difficult to characterise in simple terms. Therefore, the analysis will be necessarily limited in scope.</p>
+<p>We consider blocks such as convolutions for which one can deterministically establish<br>dependency chains between network components. We also assume that all the inputs $x$ and outputs $y$ are in the usual form of spatial maps, and therefore indexed as $x_{i,j,d,k}$ where i, j are spatial coordinates.</p>
+<p>Consider a layer y = f(x). We are interested in establishing which components of x<br>influence which components of y. We also assume that this relation can be expressed in terms of a sliding rectangular window field, called receptive field. This means that the output component yi′′,j′′ depends only on the input components xi,j where (i, j) ∈ Ω(i′′, j′′) (note that feature channels are implicitly coalesced in this discussion). The set Ω(i′′,j′′) is a rectangle defined as follows: </p>
+<p>$$ i \in \alpha(i’’ - 1) + \beta_h + [-\frac{\delta_h - 1}{2}, \frac{\delta_h - 1}{2}] $$ </p>
+<p>$$ j \in \alpha(j’’ - 1) + \beta_v + [-\frac{\delta_v - 1}{2}, \frac{\delta_v - 1}{2}] $$</p>
+<p>where (αh,αv) is the stride, (βh,βv) the offset, and (∆h,∆v) the receptive field size. </p>
+<p><em>—— Matconvnet Manual 5.1</em></p>
+</blockquote>
+<p>From my understanding, receptive field is a way of measuring network compoents dependency, i.e. A block on current map is determined by how many blocks from a previous layer?</p>
+<p>To calculate this, we need a set of parameters for each layer: filter_size $k$, stride $s$, offset(padding) $p$, and calculate the compound parameter when layers are stacked together. (* Note that I use different variable names from the manual.)</p>
+<p>For a <u>simple filter</u>, filter_size $k$, stride $s$, and left padding $p$ are straight-forward </p>
+<p>Many blocks in the neural network (e.g. max pooling, LNR, ReLU, most loss functions etc.), they have a filter-like receptive field geometry. </p>
+<ul>
+<li><strong>ReLU</strong> can be considered a 1 × 1 filter, in this case $k =1, s =1$ and $p=0$.</li>
+<li><strong>2x2 Max Pooling</strong> can be considered a 2 × 2 filter, such that $k=s=2$. But padding strategy varies for different libraries. Even when padding is zero, some libraries will get out of range to make sure every block is counted. Luckily for vgg16 this is not a problem to worry about.</li>
+<li><strong>Flatten and FCL</strong> is not a filter. But for computational simplicity, it can be considered a filter where the filter size is the value of size of input. Since FCL is ususally the last step, so this definition will not cause problems later on, but will only work for receptive calculation.</li>
+</ul>
+<p>We can proceed to work on the math equations for composition of layers. Some details were left out for simplicity.</p>
+<h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><p>Along one dimension, given filter_size $k​$, stride $s​$, left padding $p^-$, and a sample point $i_o​$, </p>
+<p>the range of points in the input field that affect $i_o$are:</p>
+<p>$i_{in} \in   s*i_o - p + [0, k-1] $</p>
+<p>$= s*i_o + (\frac{k-1}{2} - p^-) + [-\frac{k-1}{2}, \frac{k-1}{2}] $</p>
+<p>$= s*i_o + p’ + [-\frac{k-1}{2}, \frac{k-1}{2}]$</p>
+<p>where we define $p = \frac{k-1}{2} - p^-$ as the offset, and the range is inclusive. The calculation is the same for each dimension.</p>
+<h3 id="Side-Note-–-Dimension"><a href="#Side-Note-–-Dimension" class="headerlink" title="Side Note – Dimension"></a>Side Note – Dimension</h3><p>To get the dimension of next map, the equation would be to max $h$ such that the maximum range this equation can reach in the inmap is smaller than the actually length of inmap. We can write this into equation as <code>index_max - index_min + 1 &lt;= length_of_inmap</code>.</p>
+<p>$$s*(h-1) - p^- + k-1 - (0 - p^- + 0) + 1 \leq n + p^- + p^+$$</p>
+<p>If padding is symmetrical, $P=p^- = p^+$, then we get:</p>
+<p>$$h \leq \frac{n+2P-k}{s} + 1 = [\frac{n+2P-k}{s}] + 1$$</p>
+<blockquote>
+<p>Note: The manual is written for matlab, coordinates starts at 1 for the equation. I re-wrote the equations for convenience so that the coordinates start at 0. This does not affect the calculation of receptive fields. </p>
+</blockquote>
+<h3 id="Composing-receptive-fields"><a href="#Composing-receptive-fields" class="headerlink" title="Composing receptive fields"></a>Composing receptive fields</h3><p>To calculate the combination of two layers: $k_0, s_0$ and $k_1, s_1$, we can use:</p>
+<p>$$i_0 = s_0 ( i_1 - 1) + p_0 \pm \frac{k_0 - 1}{2}$$</p>
+<p>$$i_1 = s_1 (i_2 - 1) + p_0 \pm \frac{k_1-1}{2}$$</p>
+<p>Replace the $i_1$ with the second equation, we get: </p>
+<p>$i_0 = s_0 ( s_1 (i_2 - 1) + p_1 \pm \frac{k_1-1}{2} - 1)+p_0 \pm \frac{k_0-1}{2} $</p>
+<p>$ = s_0 s_1(i_2-1)+(s_0(p_1-1) + p_0) \pm\frac{(s_0(k_1-1) + k_0)-1}{2} $</p>
+<p>From the result we can deduct that the compountd k’ and s’ would be:</p>
+<p>$s’ = s_0s_1$</p>
+<p>$k’ = s_0(k_1-1)+k_0$</p>
+<p>$p’ = s_0(p_1-1)+p_0$</p>
+<h3 id="Overlaying-receptive-fields"><a href="#Overlaying-receptive-fields" class="headerlink" title="Overlaying receptive fields"></a>Overlaying receptive fields</h3><p>To calculate overlaying receptive fields as the ones in googlenet, see details in Chapter 5.6.</p>
+<h2 id="Automation-Code"><a href="#Automation-Code" class="headerlink" title="Automation (Code)"></a>Automation (Code)</h2><p>It’s tedious to calculate all 16 layers by hand, since we already have the straight-forward equation, the best way is to write some code for it:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">vgg_16 = [</span><br><span class="line">	<span class="comment"># 1</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># 2</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>],  [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># 3</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># 4</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># 5</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># fc6, fake convolutional layer   </span></span><br><span class="line">	[<span class="number">7</span>, <span class="number">1</span>]</span><br><span class="line">]</span><br><span class="line">vgg16_layers = [</span><br><span class="line">	<span class="string">&quot;3x3 conv 64&quot;</span>, <span class="string">&quot;3x3 conv 64&quot;</span>, <span class="string">&quot;pool1&quot;</span>,</span><br><span class="line">	<span class="string">&quot;3x3 conv 128&quot;</span>, <span class="string">&quot;3x3 conv 128&quot;</span>, <span class="string">&quot;pool2&quot;</span>,</span><br><span class="line">	<span class="string">&quot;3x3 conv 256&quot;</span>, <span class="string">&quot;3x3 conv 256&quot;</span>, <span class="string">&quot;3x3 conv 256&quot;</span>, <span class="string">&quot;pool3&quot;</span>,</span><br><span class="line">	<span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;pool4&quot;</span>,</span><br><span class="line">	<span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;pool5&quot;</span>,</span><br><span class="line">	<span class="string">&quot;7x7 fc&quot;</span></span><br><span class="line">]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cal_receptive_field</span>(<span class="params">kspairs, layers=<span class="literal">None</span></span>):</span></span><br><span class="line">	<span class="comment"># K: composed kernel, also the receptive field </span></span><br><span class="line">	<span class="comment"># S: composed stride</span></span><br><span class="line">	K, S = <span class="number">1</span>, <span class="number">1</span></span><br><span class="line">	<span class="comment"># H = 224</span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> layers:</span><br><span class="line">		layers = <span class="built_in">range</span>(<span class="built_in">len</span>(kspairs))</span><br><span class="line">	<span class="keyword">for</span> layer, kspair <span class="keyword">in</span> <span class="built_in">zip</span>(layers, kspairs):</span><br><span class="line">		k, s = kspair</span><br><span class="line">		K = (k-<span class="number">1</span>) * S + K</span><br><span class="line">		S = S * s</span><br><span class="line">		<span class="comment"># H = H//s</span></span><br><span class="line">		<span class="comment"># iamge size &#123;0&#125;&#x27;.format(H)</span></span><br><span class="line">		</span><br><span class="line">		print(<span class="string">&#x27;layer &#123;:&lt;15&#125;: &#123;&#125; [&#123;:3&#125;,&#123;:2&#125;]&#x27;</span>.<span class="built_in">format</span>(layer, kspair, K, S))</span><br><span class="line">		</span><br><span class="line">cal_receptive_field(vgg_16, vgg16_layers)</span><br></pre></td></tr></table></figure>
+<p>Note that we omit offset p for simplicity. </p>
+<p>Output:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">layer 3x3 conv 64    : [3, 1] [  3, 1]</span><br><span class="line">layer 3x3 conv 64    : [3, 1] [  5, 1]</span><br><span class="line">layer pool1          : [2, 2] [  6, 2]</span><br><span class="line">layer 3x3 conv 128   : [3, 1] [ 10, 2]</span><br><span class="line">layer 3x3 conv 128   : [3, 1] [ 14, 2]</span><br><span class="line">layer pool2          : [2, 2] [ 16, 4]</span><br><span class="line">layer 3x3 conv 256   : [3, 1] [ 24, 4]</span><br><span class="line">layer 3x3 conv 256   : [3, 1] [ 32, 4]</span><br><span class="line">layer 3x3 conv 256   : [3, 1] [ 40, 4]</span><br><span class="line">layer pool3          : [2, 2] [ 44, 8]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [ 60, 8]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [ 76, 8]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [ 92, 8]</span><br><span class="line">layer pool4          : [2, 2] [100,16]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [132,16]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [164,16]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [196,16]</span><br><span class="line">layer pool5          : [2, 2] [212,32]</span><br><span class="line">layer 7x7 fc         : [7, 1] [404,32]</span><br></pre></td></tr></table></figure>
+<p>Thanks for the brilliant inspiration from <a href="https://gist.github.com/ih4cku/d53f691cc79b9b433e3703740195b9f7">ih4cku</a>!</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p><img src="/images/cnn/vgg-vd-16-receptive-field.png" alt="vgg16"></p>
+<p>References:</p>
+<p><a href="https://www.reddit.com/r/MachineLearning/comments/3xob7t/calculating_receptive_fields_in_cnns/">Reddit Post</a></p>
+<p><a href="http://www.vlfeat.org/matconvnet/matconvnet-manual.pdf">matconvnet manual chapter 5</a></p>
+]]></content>
+      <tags>
+        <tag>cnn, deep learning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/posts/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<p><strong>Functions</strong>: </p>
+<p>password: yourcode</p>
+<p>top: 100 indexforimportance 0-defaulted</p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
+<p>Just in case I forgot how:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g			<span class="comment">#generate static file locally</span></span><br><span class="line">hexo d(eploy)	<span class="comment">#push to github</span></span><br></pre></td></tr></table></figure>
+<p>Here is the link to some tutorials</p>
+<p><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/index.html">Hexo搭建博客教程</a></p>
+<p><a href="http://www.lovebxm.com/2017/05/30/buildBlog/index.html">可能是最详细的 Hexo + GitHub Pages 搭建博客的教程</a></p>
+<p><a href="https://reuixiy.github.io/technology/computer/computer-aided-art/2017/06/09/hexo-next-optimization.html">打造个性超赞博客Hexo+NexT+GithubPages的超深度优化</a></p>
+<p><a href="http://www.cduyzh.com/hexo-settings-3/">自定义页面样式一</a></p>
+<p>Others:</p>
+<p><a href="https://goozy.github.io/2017/03/22/%E4%BB%8E%E4%BB%8A%E5%A4%A9%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8HyperComments%E5%95%A6%EF%BC%81/">Add Hypercomment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>FuzzIt -- Online Fuzzy Search Tool (FuzzBall.js) Scorer</title>
+    <url>/posts/online-fuzzywuzzy-scorer/</url>
+    <content><![CDATA[<p class="description"></p>
+
+<p>I wrote this when I was implementing fuzzy search on a project I am working onto compare the scorers, it’s a small tool but convenient to use. Just thinking maybe I should share it!</p>
+<a id="more"></a>
+
+<iframe src="https://codesandbox.io/embed/1v1j98nrmj" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+
+
+]]></content>
+  </entry>
+  <entry>
+    <title>Internship Weekly Review</title>
+    <url>/posts/weekly-review/</url>
+    <content><![CDATA[<p>A beautiful summer doing web development at Duke!</p>
+<a id="more"></a>
+
+<h4 id="2018-08-06-2018-08-12"><a href="#2018-08-06-2018-08-12" class="headerlink" title="2018.08.06~2018.08.12"></a>2018.08.06~2018.08.12</h4><p>Toward the end of my internship at DIHI! I love it here, and are considering stay around for the next school year.</p>
+<p><strong>Recent Goal</strong></p>
+<ol>
+<li>Finish up the intern projects!</li>
+<li>Start job hunting!</li>
+<li>Conclude my recent experience with Mobx and SQLAlchemy a bit…</li>
+</ol>
+<p><strong>Recent Spare Time</strong></p>
+<ol>
+<li>Workout</li>
+<li>Handstand Practice</li>
+<li>Cooking</li>
+</ol>
+<h4 id="2018-5-21-2018-6-25"><a href="#2018-5-21-2018-6-25" class="headerlink" title="2018.5.21~2018.6.25"></a>2018.5.21~2018.6.25</h4><p>First 5 weeks of Internship:</p>
+<p><strong>Intensive Learning</strong>:</p>
+<p>(In progress) writing an article summarizing waht I learned about web application development <a href="/posts/Full-Stack-Beginner-s-Guide-Flask-React-SQLAlchemy/">Full-Stack Beginner’s Guide</a></p>
+<p><strong>Spare Time</strong>:</p>
+<ol>
+<li>Spending Time with my chinchilla Juicy!<br><img src="upload_img/weekly/juicy.jpg" alt="Juicy"></li>
+<li>Learning Stanford’s <a href="https://lagunita.stanford.edu/courses/course-v1:ComputerScience+MMDS+SelfPaced/info">Mining of Massive Datasets</a></li>
+<li>Going to Gym every other day<br><img src="/images/weekly/my-back.jpg" alt="Back"><br>After nearly 9 months, finally start to see some progress now :D. Just got my whey protein powder to build my muscles over the summer!</li>
+</ol>
+<h4 id="2018-5-5-2018-5-17"><a href="#2018-5-5-2018-5-17" class="headerlink" title="2018.5.5~2018.5.17"></a>2018.5.5~2018.5.17</h4><p>Back to China :)</p>
+<p>Food, Food, and Food!!!</p>
+<h4 id="2018-4-16-2018-4-22"><a href="#2018-4-16-2018-4-22" class="headerlink" title="2018.4.16~2018.4.22"></a>2018.4.16~2018.4.22</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li>Worked on my final exams and projects </li>
+</ol>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>Prepare to move &amp; fly home 🏡🏡</li>
+<li>Customize article color for zike.io &amp;&amp; do some SEO</li>
+</ol>
+<h4 id="2018-4-9-2018-4-15"><a href="#2018-4-9-2018-4-15" class="headerlink" title="2018.4.9~2018.4.15"></a>2018.4.9~2018.4.15</h4><p>**This week I have: **</p>
+<ol>
+<li>Worked on my final exams and projects </li>
+<li>Interviewed for TA</li>
+</ol>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>Continue working on finals</li>
+<li>Start learning functional programming</li>
+</ol>
+<h4 id="2018-4-2-2018-4-8"><a href="#2018-4-2-2018-4-8" class="headerlink" title="2018.4.2~2018.4.8"></a>2018.4.2~2018.4.8</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li>Attended Visualization Workshop, learned more Tableau tricks.</li>
+<li>Worked on DataFest, first time dealing with over 17000000 data.</li>
+<li>Made some progress on Kaggle challenge using Gradient Boosting Regression.</li>
+</ol>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>More Feature Engineering with the Kaggle dataset</li>
+<li>Apply for TA for next semester</li>
+</ol>
+<h4 id="2018-3-26-2018-4-1"><a href="#2018-3-26-2018-4-1" class="headerlink" title="2018.3.26~2018.4.1"></a>2018.3.26~2018.4.1</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li>Fixed redirect problems on zike.io (deleted A records, and add two CNAME records )</li>
+<li>Started working on Kaggle challenge, tried random forest and SVR.</li>
+</ol>
+<h4 id="2018-3-19-2018-3-25"><a href="#2018-3-19-2018-3-25" class="headerlink" title="2018.3.19~2018.3.25"></a>2018.3.19~2018.3.25</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li>Set up my AWS account, and tested run cat/dog classifier on the server</li>
+</ol>
+<p><strong>For next week:</strong></p>
+<ol>
+<li><p>Start working on Kaggle challenge</p>
+</li>
+<li><p>Meet with advisor</p>
+<p>​</p>
+</li>
+</ol>
+<h4 id="2018-2-18-2018-2-24"><a href="#2018-2-18-2018-2-24" class="headerlink" title="2018.2.18 ~ 2018.2.24"></a>2018.2.18 ~ 2018.2.24</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li><p>Learned SVM and Kernel in <strong>Machine Learning</strong></p>
+<p>Wrote a software with JavaFX in <strong>Software Engineering</strong> by myself<br>Practiced writing python code with toolz in <strong>Statistical Computing</strong></p>
+</li>
+<li><p>Sent a few resume…</p>
+</li>
+<li><p>Added “Comment” to this site :D </p>
+</li>
+</ol>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>Getting experience with millions of rows of data</li>
+<li>Start working on the program as a group</li>
+</ol>
+<p><strong>Future</strong></p>
+<ul>
+<li>Write about how I use iPad Pro to boost efficiency</li>
+</ul>
+<h4 id="2018-2-12-2018-2-17"><a href="#2018-2-12-2018-2-17" class="headerlink" title="2018.2.12 ~ 2018.2.17"></a>2018.2.12 ~ 2018.2.17</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li>Went to multiple career fair</li>
+</ol>
+<p><strong>For next week:</strong></p>
+<p><strong>Future</strong></p>
+<ul>
+<li>Write about how I use iPad Pro to boost efficiency</li>
+<li>Add “Comment” function to this site :D (I really wanted to update more often, but there is just so much work to do, I’ll try to update to GitHub more often) (not finished last week)</li>
+</ul>
+<h4 id="2018-2-5-2018-2-11"><a href="#2018-2-5-2018-2-11" class="headerlink" title="2018.2.5 ~ 2018.2.11"></a>2018.2.5 ~ 2018.2.11</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li>Started Course2 in the Specialization</li>
+<li>Learned Logistic Regression in <strong>Machine Learning</strong><br>Took the lead role in my team in <strong>Software Engineering</strong><br>Learned a lot of features of pandas in <strong>Statistical Computing</strong></li>
+<li>Updated my resume</li>
+</ol>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>Career Fair</li>
+<li>Start reading “Statistics for Data Scientists” </li>
+<li>Write about how I use iPad Pro to boost efficiency</li>
+<li>Add “Comment” function to this site :D (I really wanted to update more often, but there is just so much work to do, I’ll try to update to GitHub more often) (not finished last week)</li>
+</ol>
+<h4 id="2018-1-29-2018-2-4"><a href="#2018-1-29-2018-2-4" class="headerlink" title="2018.1.29 ~ 2018.2.4"></a>2018.1.29 ~ 2018.2.4</h4><p>* I Got My iPad Pro !!! It is AMAZING to go paperless!!! *</p>
+<p><strong>This week I have:</strong></p>
+<ol>
+<li>Finished Course1 and got the <a href="https://www.coursera.org/account/accomplishments/records/2F3NSNRH6Y8T">Certificate</a>! First course on Coursera!</li>
+<li>Learned Decision Tree, Random Forest, KNN, Linear Classification(FLD) in <strong>Machine Learning</strong> and <strong>Pattern Recognition</strong><br>Learned about Agile Project Management in <strong>Software Engineering</strong><br>Learned a lot of Python skills in <strong>Statistical Computing</strong></li>
+<li>Quitted Academic Writing</li>
+<li>Not gotten into the Citadal Data Open, guess I submitted the assessment too late :(</li>
+</ol>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>Pick Up On Bayesian</li>
+<li>Study for Machine Learning exam</li>
+<li>Start searching for companies and filing applications </li>
+<li>Add “Comment” function to this site :D (I really wanted to update more often, but there is just so much work to do, I’ll try to update to GitHub more often)</li>
+</ol>
+<h4 id="2018-1-22-2018-1-28"><a href="#2018-1-22-2018-1-28" class="headerlink" title="2018.1.22 ~ 2018.1.28"></a>2018.1.22 ~ 2018.1.28</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li>Talked to Career Center and attended lectures on polishing my resume</li>
+<li>Finished assessment for <strong>Citadel Data</strong></li>
+<li>Resumed auditing <strong>Statistical Computing</strong></li>
+<li><strong>NOT</strong> finished the Coursera Course</li>
+</ol>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>Coursera Course</li>
+</ol>
+<h4 id="2018-1-15-2018-1-21"><a href="#2018-1-15-2018-1-21" class="headerlink" title="2018.1.15 ~ 2018.1.21"></a>2018.1.15 ~ 2018.1.21</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li><p>Started to work on <strong>Java</strong> for my Software Engineering course</p>
+<p>Started to use <strong>Slack</strong> for Software Engineering</p>
+</li>
+<li><p>Finished <strong>week 3</strong> of Coursera: <em>Data Science At Scale</em></p>
+</li>
+<li><p>Learned <strong>Regular Expression</strong> on <a href="https://developers.google.com/edu/python/regular-expressions">Google Python Class</a>, will update my project to Github later</p>
+</li>
+</ol>
+<p>Snowstorm on Wednesday and Thursday, no Class, Career Fair cancelled</p>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>talk to career center</li>
+</ol>
+<h4 id="2018-1-8-2018-1-14"><a href="#2018-1-8-2018-1-14" class="headerlink" title="2018.1.8 ~ 2018.1.14"></a>2018.1.8 ~ 2018.1.14</h4><p><strong>This week I have:</strong></p>
+<ol>
+<li><p>Started school</p>
+<p>Courses taking: <em>Pattern Recognition</em>, <em>Machine Learning</em>, <em>Software Engineering</em>, (<em>Statistical Computation</em>), <em>Weight Training</em></p>
+</li>
+<li><p>Finished <strong>week 2</strong> of Coursera: <em>Data Science At Scale</em></p>
+<p>Assignment is an SQL practice</p>
+</li>
+<li><p>Learned SQL on codecademy.com</p>
+<p>Reviewed python a little bit</p>
+</li>
+</ol>
+<p>Pretty intensive for the start of the semester. &gt;o&lt;</p>
+<p><strong>For next week:</strong></p>
+<ol>
+<li>Getting Prepared for the Career Fair on Wednesday and Thursday</li>
+<li>Start Course 2 in the specialization: <em>Data Science At Scale</em></li>
+</ol>
+]]></content>
+      <tags>
+        <tag>Summary</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Create gif to illustrate algorithms with Microsoft PowerPoint</title>
+    <url>/posts/use-gif-to-illustrate-algorithm-with-powerpoint/</url>
+    <content><![CDATA[<p class="description">Animate the algorithm development with gif pictures made with Microsoft PowerPoint!</p>
+
+<img src="/images/animation_with_ppt/dp_animation.gif" />
+
+
+<a id="more"></a>
+
+
+<p>This morning, I was trying to solve a dynamic programming problem and visualize the process with a table. It suddenly came to me that I can animate the process with a gif. My first thought was to use Adobe AI, then after I opened the application, I ran into the first problem: draw a table! Obviously I am not expert of Adobe Illustrator, I don’t even draw or paint decently! The next thing that came into my mind is PowerPoint. Right, the ultimate solution for all animations.</p>
+<p>I have seen people recreate Apple ads videos <strong>Designed by apple in california</strong> <a href="https://youtu.be/kyQfye4vAQ8">original video on YouTube</a> and then the 108 second one with powerpoints, and it was stunning. Since then I knew how powerful PowerPoint can be, and I actually created a campaign video for my friend in their L’Oreal Campus Challenge with PowerPoint. But it takes time. What I am about to do next is way simpler, my purpose of writing the post is simply to show a possibility. If you have a easier or faster way, please comment and tell me about it! I’d love to learn more.</p>
+<iframe height=498 width=510 src='http://player.youku.com/embed/XNjk1ODc5MTYw' frameborder=0 'allowfullscreen'></iframe>
+
+
+
+<h2 id="A-few-questions-up-front"><a href="#A-few-questions-up-front" class="headerlink" title="A few questions up front"></a>A few questions up front</h2><ol>
+<li><p>How do I get .gif from .pptx?</p>
+<p>Two ways, both are straightforward and free! (You need subscription for Microsoft Office 365 though)</p>
+<p>a. Export the slides as a video file (.mp4 or .mov), then convert it to a gif.</p>
+<p>b. Export the slides as individual pictures, each frame corresponding to one image, and then concatenate them into a gif file.</p>
+</li>
+<li><p>Why would I choose PowerPoint over AI?</p>
+<p>First, if you don’t have or are not familiar with AI and other design apps. PowerPoint would save you from the learning curve. (I assume everyone has made slides before.)</p>
+<p>Second, it is actually easier to draw diagrams and tables as needed in an algorithm visualization because that’s what powerpoint is designed for.</p>
+<p>Third, the derivation of answers is discreet, so ppt animations are great for the purpose. (In the latest version fo PowerPoint, the animation will help animate the transitions too.)</p>
+</li>
+<li><p>What do I need to know about powerpoint?</p>
+<p>Only the Basics. No extra package needed. Insert a special symbol. Change the color and size of a box. Add an animation. That’s it. </p>
+<p>Trust me, I have been playing with PowerPoint animations since 4-th grade, remember the built-in clip art? Those are my childhood memories. The only thing you need is a bit of patience. </p>
+</li>
+</ol>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>So the example I used is a dynamic progrmming problem, where a ski Resort tries to assign the most close size of skis to skiers. The program measures disparity by summing up the absolute value of differences between the heights of customer and the size of ski boards. The goal is to minimize the disparity. (In this problem the resort always has enough number of boards for all customers m&gt;=n). I will not go into the details here.</p>
+<p>What I want to create is a 6x7 table, with animation showing how the table is filled out step by step. I will use arrows to show how one answer leads to another in the recursion steps. On the side, The corresponding pseudo-code will show as the arrows and numbers appear.</p>
+<p>I took it straight from my homework, so credit to my algorithm course instructor Eric. Hopefully no one from my class will see my solution before the deadline of the assignment.</p>
+<p>Here I want to make a classic dynamic programming table with a test case:</p>
+<blockquote>
+<p>Skier Height = [63, 65, 67, 69, 71]<br>SKi Height = [60, 64, 66, 68, 70, 80]</p>
+</blockquote>
+<h3 id="Make-Grid"><a href="#Make-Grid" class="headerlink" title="Make Grid"></a>Make Grid</h3><p>I start by drawing out the boxes and legend with Table, Shape, and Text Box. Then I grouped the shapes, for easier management.</p>
+<p><img src="/images/animation_with_ppt/1makegrid.png" alt="1makegrid"></p>
+<p>If you have OCD, you might notice that the numbers are not perfectly aligned. I don’t need to, it takes too long to manually align them. I only need to align them with the <code>Arrange</code> toolbox after I am done. </p>
+<p><img src="/images/animation_with_ppt/2group.png" alt="2group"></p>
+<h3 id="Object-Arrangement"><a href="#Object-Arrangement" class="headerlink" title="Object Arrangement"></a>Object Arrangement</h3><p>In fact, I don’t even need to put each number above the correct column. <code>Arrangement</code> is going to handle them all.</p>
+<p>In the following example, I want to add a letter <code>B</code>  to the top-right corner of the cell in the first row to indicate they are the basecase cells.</p>
+<p>What I did was:</p>
+<ol>
+<li>Create a text box <code>B</code>, <code>⌘-c ⌘-v</code> it 6 times. </li>
+<li>Put the first and the last one it the right place. </li>
+<li>Arrange - Align - Distribute Horizontally</li>
+<li>Arrange - Align - Align Top</li>
+</ol>
+<p><img src="/images/animation_with_ppt/3aBatchalign.png" alt="3aBatchalign"></p>
+<p><img src="/images/animation_with_ppt/3bAlign.png" alt="3bAlign"></p>
+<p><img src="/images/animation_with_ppt/3cAlignresult.png" alt="3cAlignresult"></p>
+<p>Then I repeat the similar stuff for cells in diagonal line. This is the other set of base cases.</p>
+<p><img src="/images/animation_with_ppt/3dAlignAgain.png" alt="3dAlignAgain"></p>
+<h3 id="Select-Pane-Object-Management"><a href="#Select-Pane-Object-Management" class="headerlink" title="Select Pane - Object Management"></a>Select Pane - Object Management</h3><p>By now, I have finished my first steps of my algorithm. I want to create some animations. I want the first test cases to show simutaneously, so I grouped them. To see what objects I have so far, I opened the Selection Pane from the Format tab. </p>
+<p><img src="/images/animation_with_ppt/4aSelectPane.png" alt="4aSelectPane"></p>
+<p>The boxes were a product of copy and paste, so they have pretty bad names. This will make the Animation Pane a mess and impossible to work with (when you have more animations and objects on the canvas). So I renamed them.</p>
+<p><img src="/images/animation_with_ppt/4bObjectRename.png" alt="4bObjectRename"></p>
+<p>Now the Animation Pane is a pleasure to the eye. (Same thing for writing readable codes, right?)</p>
+<p><img src="/images/animation_with_ppt/5Animation.png" alt="5Animation"></p>
+<h3 id="Operating-on-layers"><a href="#Operating-on-layers" class="headerlink" title="Operating on layers"></a>Operating on layers</h3><p>If you are a Photoshop user, you must be familar with the concept of layers. With layers, you can work on part of the images and not mess up other parts. With Selection Pane, you can do the same thing.</p>
+<p>My next step is to add small arrows to connect cells, I just need to dupliate 6 small arrows and do the same object arrangement tricks again. So I made 6 arrows, put the first one and last one in place. But here comes a new problem. With all these numbers and subscripts each being independent text boxes, it can be really hard for me to select only the arrows.</p>
+<p>I open the selection pane, click hide all, and make only the 6 arrows visible. Select All, Arrange, Distribute, Done! Effortless.</p>
+<p><img src="/images/animation_with_ppt/6TechniqueHideAll.png" alt="6TechniqueHideAll"></p>
+<p>With these arrows selected, I click on Animation to give every element I selected with the same <code>Fade</code>  effect.</p>
+<p><img src="/images/animation_with_ppt/7BatchAnimation.png" alt="7BatchAnimation"></p>
+<p>Before you un-select, remember to change the <code>timing</code> option to be <code>on-click</code> or <code>after previous</code>. The default behavior is to appear together when you create animation for multiple objects.</p>
+<p><img src="/images/animation_with_ppt/8AnimationClick.png" alt="8AnimationClick"></p>
+<p>Let’s see how that goes! (I realized I didn’t need to fill all the zeros so I deleted them.)</p>
+<p><img src="/images/animation_with_ppt/basecase.gif" alt="basecase"></p>
+<h3 id="Divide-and-Conquer"><a href="#Divide-and-Conquer" class="headerlink" title="Divide and Conquer"></a>Divide and Conquer</h3><p>Now that I have finished all the base cases. I need to move on to the recursive steps. The Animation Pane is filled with many boxes. </p>
+<p>It seems like a good time to commit the work and build new features in a new branch. Why don’t wee save the work here and start the next stage somewhere else? The good thing about copying and pasting in PowerPoint is that, the animations is also copied. So I only need to work on additional features in a new slide, and copy it back after I have finished testing it.</p>
+<p>I duplicate the the canvas, remove the animations from previous page, and start working on new features.</p>
+<p>Two more steps: 1. add the arrow for recursive calls; 2. calculate the disparity in the return expression. Two more canvas.</p>
+<p><img src="/images/animation_with_ppt/9aSplitPane.png" alt="9aSplitPane"></p>
+<p><img src="/images/animation_with_ppt/9bSplitPane.png" alt="9bSplitPane"></p>
+<p><img src="/images/animation_with_ppt/9cSplitPane.png" alt="9cSplitPane"></p>
+<p>I can now work on different features in different pages. Even when I need to modify the features in previous pages, I do not need to copy the change into later slides. Sounds pretty git, huh.</p>
+<p>When I was editing the new pages, I went back and changed the arrow colors, added some more words. When I copy the new arrows back later, all I need to do is to select the new feature in the Selection Pane, and put them in the right places.</p>
+<p>Most likely, the animations will be appended to the end of the animations flow.</p>
+<p><img src="/images/animation_with_ppt/10aMerge.png" alt="10aMerge"></p>
+<p><img src="/images/animation_with_ppt/10bMerge.png" alt="10bMerge"></p>
+<p>Then I just changed the duration of each animation to make sure it is not too fast.</p>
+<p><img src="/images/animation_with_ppt/11AdjustAnimation.png" alt="11AdjustAnimation"></p>
+<h2 id="See-the-work"><a href="#See-the-work" class="headerlink" title="See the work!"></a>See the work!</h2><p>Use the <code>Export - As video</code> to get the .mp4 file. Then google <code>convert mp4 to gif</code>, you’ll see a whole page of free online tools. </p>
+<p>Now it’s time to show off your work! </p>
+<p><img src="/images/animation_with_ppt/dp_animation.gif" alt="dp_animation"></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Setting Up AWS for Data Mining (and jupyter notebooks)</title>
+    <url>/posts/setting-up-AWS-for-data-mining/</url>
+    <content><![CDATA[<p class="description">My experience of setting up deep learning environment on AWS, including how to create an instance, keep the data aftering you shut it down, set up budget warning and edit your file on the server without being charged.</p>
+
+<a id="more"></a>
+
+<h3 id="Set-up-AWS-account"><a href="#Set-up-AWS-account" class="headerlink" title="Set up AWS account"></a>Set up AWS account</h3><p>Go to <a href="https://aws.amazon.com/">https://aws.amazon.com</a> and set up your account</p>
+<blockquote>
+<p><strong>Tips</strong>: If you are a student, you may check <a href="https://aws.amazon.com/education/awseducate/">AWS Educate</a> and see if you’re eligible for $100.</p>
+<p>It may take a few days for Amazon to confirm school info and send the promo code.</p>
+</blockquote>
+<h3 id="THE-EASY-WAY-for-spot-instance"><a href="#THE-EASY-WAY-for-spot-instance" class="headerlink" title="THE EASY WAY (for spot instance)"></a>THE EASY WAY (for spot instance)</h3><p>fast.ai provides scripts to automate the whole process.</p>
+<p><a href="http://wiki.fast.ai/index.php/AWS_Spot_instances">AWS Spot instances Tutorial</a></p>
+<h4 id="Initialization-Only-done-once"><a href="#Initialization-Only-done-once" class="headerlink" title="Initialization (Only done once)"></a>Initialization (Only done once)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install jq</span><br><span class="line">git <span class="built_in">clone</span> --depth=1 https://github.com/slavivanov/ec2-spotter.git</span><br></pre></td></tr></table></figure>
+<h5 id="Create-an-Instance"><a href="#Create-an-Instance" class="headerlink" title="Create an Instance"></a>Create an Instance</h5><ul>
+<li>ami —Depending on which region we have picked and whether we want to use Fast.ai image or the Amazon one, we need to select an image <em>(Amazon images below are updated to version 1.3 from April 2017)</em>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Region/Provider</th>
+<th>Fast.ai</th>
+<th>Amazon</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>us-east-1</td>
+<td>ami-31ecfb26</td>
+<td>ami-fb8e19ed</td>
+</tr>
+<tr>
+<td>us-west-2</td>
+<td>ami-bc508adc</td>
+<td>ami-638c1e03</td>
+</tr>
+<tr>
+<td>eu-west-1</td>
+<td>ami-b43d1ec7</td>
+<td>ami-c5afaaa3</td>
+</tr>
+</tbody></table>
+<ul>
+<li>subnetId — Use the subnet ID that create_vpc.sh printed.</li>
+</ul>
+<ul>
+<li>securityGroupId — Use the security group ID that create_vpc.sh printed.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. ec2-spotter/fast_ai/create_vpc.sh</span><br><span class="line">. ec2-spotter/fast_ai/start_spot_no_swap.sh --ami ami-53b23433 --subnetId subnet-9f69c3d6 --securityGroupId sg-a62f2ede</span><br><span class="line"><span class="comment"># instance_ip seen in the output</span></span><br><span class="line">instance_ip=instance_ip_from_previous_step</span><br><span class="line">ssh -i ~/.ssh/aws-key-fast-ai.pem ubuntu@<span class="variable">$instance_ip</span></span><br></pre></td></tr></table></figure>
+<h5 id="Detach-the-volume-and-make-it-permanent"><a href="#Detach-the-volume-and-make-it-permanent" class="headerlink" title="Detach the volume and make it permanent"></a>Detach the volume and make it permanent</h5><p>The script will also terminate the instance from Step 1</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh ec2-spotter/fast_ai/config_from_instance.sh</span><br></pre></td></tr></table></figure>
+<p>Once you see the message, it is done.</p>
+<h4 id="Launch-an-instance-whenever-you-need-one"><a href="#Launch-an-instance-whenever-you-need-one" class="headerlink" title="Launch an instance (whenever you need one)"></a>Launch an instance (whenever you need one)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh fast_ai/start_spot.sh</span><br></pre></td></tr></table></figure>
+<p>Wait until the <code>Initializing</code> disappears from status-checks tag on Instances panel.</p>
+<h5 id="Connect"><a href="#Connect" class="headerlink" title="Connect"></a>Connect</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -i YOUR-KEY.pem ubuntu@YOUR-PUBLIC-DNS -L8888:localhost:8888  </span><br></pre></td></tr></table></figure>
+<h5 id="Terminate-the-instance"><a href="#Terminate-the-instance" class="headerlink" title="Terminate the instance"></a>Terminate the instance</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Change $instance_id to your instance id obviously.</span></span><br><span class="line">aws ec2 terminate-instances --instance-ids <span class="variable">$instance_id</span></span><br></pre></td></tr></table></figure>
+<p>This is by far the most effortless way to set up an AWS</p>
+<hr>
+<p>If you want do more customization, then you can manually set it up.</p>
+<h3 id="Create-Instance"><a href="#Create-Instance" class="headerlink" title="Create Instance"></a>Create Instance</h3><p><a href="http://wiki.fast.ai/index.php/AWS_install">http://wiki.fast.ai/index.php/AWS_install</a> fast.ai’s tutorial on setting up AWS, it provides some <a href="https://github.com/fastai/courses/tree/master/setup">scripts</a> to simplify the steps to launch your AWS. It also gives solutions to common problems when trying to set up AWS server.</p>
+<p><a href="http://forums.fast.ai/t/great-summary-of-how-to-use-aws/7651">http://forums.fast.ai/t/great-summary-of-how-to-use-aws/7651</a> A clear instruction to help set up AWS server and run jupyter notebooks.</p>
+<p>The standard choice is to launch an instance on the EC2 tag. But a more budget-friendly choice is to launch a spot instance. </p>
+<p>Later, <a href="#Keep-the-AMI-running-switch-to-t2-micro">this chapter</a> will cover how to combine some of choices the to save money.</p>
+<h4 id="Spot-Instance"><a href="#Spot-Instance" class="headerlink" title="Spot Instance"></a>Spot Instance</h4><p><a href="https://aws.amazon.com/ec2/spot/">https://aws.amazon.com/ec2/spot/</a></p>
+<h4 id="500h-Free-Tier"><a href="#500h-Free-Tier" class="headerlink" title="500h Free Tier"></a>500h Free Tier</h4><p><a href="https://aws.amazon.com/free/faqs/?ft=n">t2-micro instance</a></p>
+<h3 id="Run-your-instance"><a href="#Run-your-instance" class="headerlink" title="Run your instance"></a>Run your instance</h3><p>Find following instructions by clicking <code>Connect</code> in the <code>Instances</code> panel.</p>
+<p>To access your instance:</p>
+<ol>
+<li>Open an SSH client, you can use Terminal on Mac OS.</li>
+<li>Rename your private key file from <code>your_key.pem.txt</code> to <code>your_key.pem</code>, and move to desired position. The wizard automatically detects the key you used to launch the instance.</li>
+<li>Your key must not be publicly viewable for SSH to work. Use this command if needed:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod 400 YOUR-KEY.pem</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>Connect to your instance using its Public DNS:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -i YOUR-KEY.pem ubuntu@YOUR-PUBLIC-DNS -L8888:localhost:8888  </span><br></pre></td></tr></table></figure>
+<p>YOUR-PUBLIC-DNS can be found at <code>EC2</code> - <code>Instances</code> panel, click <code>connect</code>.</p>
+<h3 id="Using-fast-ai-AMI"><a href="#Using-fast-ai-AMI" class="headerlink" title="Using fast.ai AMI"></a>Using fast.ai AMI</h3><p>keep updated</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> fastai</span><br><span class="line">git pull</span><br><span class="line">conda env update <span class="comment"># once a month</span></span><br></pre></td></tr></table></figure>
+<p>check for status</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span> python</span><br><span class="line">python --version</span><br><span class="line">pip list --format=legacy</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Persistent-Volume"><a href="#Persistent-Volume" class="headerlink" title="Persistent Volume"></a>Persistent Volume</h3><p><a href="http://wiki.fast.ai/index.php/AWS_Spot_instances">AWS Spot instances Tutorial</a></p>
+<p>Spot instance is a budget friendly choice. One downside about AWS spot instance is that, once you shut down the instance, everything gets lost. The tutorial provides two ways to solve the problem, the first is to create an external EBS volume, the second is to swap root volume. My personal preference is the second one. See comparison and details in the link.</p>
+<h3 id="Keep-the-AMI-running-with-lower-cost"><a href="#Keep-the-AMI-running-with-lower-cost" class="headerlink" title="Keep the AMI running (with lower cost)"></a>Keep the AMI running (with lower cost)</h3><p><a href="http://forums.fast.ai/t/switching-between-free-t2-micro-and-paid-p2-xlarge-on-aws/7116/15">Tutorial</a></p>
+<p>If you want to be able to edit file on the server, but do not wish to pay for the GPU which you are not using, one option is to switch to free t2-micro temporarily.</p>
+<p>Not fulfilled yet.</p>
+<h3 id="Budget-Warning"><a href="#Budget-Warning" class="headerlink" title="Budget Warning"></a>Budget Warning</h3><h4 id="Create-Budget"><a href="#Create-Budget" class="headerlink" title="Create Budget"></a>Create Budget</h4><p><code>Billing</code> -&gt; <code>Dashboard</code> - <code>Budgets</code> -&gt; <code>Create Budgets</code></p>
+<h4 id="Simple-Notification-Service"><a href="#Simple-Notification-Service" class="headerlink" title="Simple Notification Service"></a>Simple Notification Service</h4><p>This is an option if you wish to get the warning notification elsewhere, SMS for example.</p>
+<h5 id="Create-Topic"><a href="#Create-Topic" class="headerlink" title="Create Topic"></a>Create Topic</h5><h5 id="Edit-Topic-Policy"><a href="#Edit-Topic-Policy" class="headerlink" title="Edit Topic Policy"></a>Edit Topic Policy</h5><h5 id="Subscript-to-Topic"><a href="#Subscript-to-Topic" class="headerlink" title="Subscript to Topic"></a>Subscript to Topic</h5><h3 id="other-not-using-fast-ai-AMI"><a href="#other-not-using-fast-ai-AMI" class="headerlink" title="(other) not using fast.ai AMI"></a>(other) not using fast.ai AMI</h3><p>You’ll need to install all the packages and set the environment courself. I am using the fast.ai AMI, so I don’t need this yet. </p>
+<p>Here is a link <a href="http://www.diegoacuna.me/installing-cuda-8-on-ubuntu-16-04/">http://www.diegoacuna.me/installing-cuda-8-on-ubuntu-16-04/</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># install python3, numpy, jupyter, scipy, and matplotlib...</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python3-pip</span><br><span class="line"><span class="built_in">export</span> LC_ALL=C</span><br><span class="line">sudo -H pip3 install pip --upgrade</span><br><span class="line">sudo -H pip3 install numpy jupyter scipy matplotlib</span><br><span class="line">sudo apt-get install emacs24</span><br><span class="line"><span class="comment"># install pytorch</span></span><br><span class="line"></span><br><span class="line">sudo reboot</span><br><span class="line">nvcc --version</span><br></pre></td></tr></table></figure>
+<p><a href="https://thepcspy.com/read/making-ssh-secure/">https://thepcspy.com/read/making-ssh-secure/</a></p>
+]]></content>
+      <tags>
+        <tag>data science</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Full-Stack Beginner&#39;s Guide (Flask+React+SQLAlchemy)</title>
+    <url>/posts/Full-Stack-Beginner-s-Guide-Flask-React-SQLAlchemy/</url>
+    <content><![CDATA[<p class="description">Developing Web Application with RESTful API and React Front End</p>
+
+<h1 id="Full-Stack-Beginner’s-Guide"><a href="#Full-Stack-Beginner’s-Guide" class="headerlink" title="Full-Stack Beginner’s Guide"></a>Full-Stack Beginner’s Guide</h1><p>I have gone through an intensive learning period to quickly pick up entry-level full stack development, I learned to set up a database based REST web service with Flask and SQLAlchemy, then I picked up some front-end web application with React/Vue. I feel like it’s time to sum up what I’ve learned so far and how I learned them.<br>This article does not include many technical details, but rather talks about how I stumbled through and shares some experience to improve learning curve.</p>
+<h2 id="My-learning-path"><a href="#My-learning-path" class="headerlink" title="My learning path"></a>My learning path</h2><p><em>prior knowledge</em> of SQL, python, (git, virtualenv, …)<br>sqlalchemy -&gt; flask + (html) -&gt; RESTful API -&gt; Javascript/ES6 -&gt; React/Vue…</p>
+<p>It is not exactly a one-way path, but rather a back-and-forth process to keep going back and get refined view of the way each parts are organized and constantly refactoring the code.</p>
+<p>It is highly recommended that you don’t just stick to one tutorial, get several well-written pieces that uses slightly different or focuses. Try to understand what approaches they use to achieve certain goals and compare the differences between.</p>
+<a id="more"></a>
+
+<h2 id="Sections"><a href="#Sections" class="headerlink" title="Sections"></a>Sections</h2><h3 id="SQLAlchemy"><a href="#SQLAlchemy" class="headerlink" title="SQLAlchemy"></a>SQLAlchemy</h3><p>SQLAlchemy CORE syntax is easy to grasp if you have prior knowledge of SQL, the syntax for query basically stays the same. If you don’t, no worries, basic SQL queries are actually quite easy to learn. Just go and try write some queries yourself. [SQLAlchemy] has two major modes: ORM and CORE. (<a href="http://docs.sqlalchemy.org/en/latest/">SQLAlchemy Documentation —    SQLAlchemy 1.2 Documentation</a>)</p>
+<p>If you are learning SQLAlchemy alone (or with SQL), you probably are learning SQLAlchemy CORE, that uses engine to connect. SQLAlchemy CORE probably looks like this:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy import create_engine, MetaData, <span class="keyword">Table</span></span><br><span class="line">engine <span class="operator">=</span> create_engine(<span class="string">&#x27;connection_string&#x27;</span>)</span><br><span class="line">connection <span class="operator">=</span> engine.connect()</span><br><span class="line"></span><br><span class="line">metadata <span class="operator">=</span> MetaData()</span><br><span class="line">users <span class="operator">=</span> <span class="keyword">Table</span>(<span class="string">&#x27;users&#x27;</span>, metadata,</span><br><span class="line">    <span class="keyword">Column</span>(<span class="string">&#x27;id&#x27;</span>, <span class="type">Integer</span>, primary_key<span class="operator">=</span><span class="literal">True</span>),</span><br><span class="line">    <span class="keyword">Column</span>(<span class="string">&#x27;name&#x27;</span>, String),</span><br><span class="line">    <span class="keyword">Column</span>(<span class="string">&#x27;fullname&#x27;</span>, String),</span><br><span class="line">)</span><br><span class="line">metadata.create_all(engine)</span><br><span class="line"></span><br><span class="line">stmt <span class="operator">=</span> <span class="keyword">select</span>([state, age]).group_by(state)</span><br><span class="line">results <span class="operator">=</span> connection.execute(stmt).fetchall()</span><br></pre></td></tr></table></figure>
+<p>It deals with Tables with MetaData, and executes sql queries through connection engine.</p>
+<p>For SQLAlchemy ORM, it may take a little more time to understand how the object maps to the database, but you will be able to figure it out by trying building a small web service with SQLAlchemy. </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> Column, Integer, String</span><br><span class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> sessionmaker</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span>(<span class="params">Base</span>):</span></span><br><span class="line">    __tablename__ = <span class="string">&#x27;users&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">id</span> = Column(Integer, primary_key=<span class="literal">True</span>)</span><br><span class="line">    name = Column(String)</span><br><span class="line">    fullname = Column(String)</span><br><span class="line">    password = Column(String)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;&lt;User(name=&#x27;%s&#x27;, fullname=&#x27;%s&#x27;, password=&#x27;%s&#x27;)&gt;&quot;</span> % ( self.name, self.fullname, self.password)</span><br><span class="line"></span><br><span class="line">engine = create_engine(<span class="string">&#x27;connection_string&#x27;</span>)</span><br><span class="line">Base.metadata.create_all(engine)</span><br><span class="line"></span><br><span class="line">Session = sessionmaker(bind=engine)</span><br><span class="line">user = session.query(User).filter_by(name=<span class="string">&#x27;ed&#x27;</span>).first() </span><br><span class="line">session.add(new_user)</span><br></pre></td></tr></table></figure>
+<p>It users higher level abstraction (Declarative system) to construct and work with tables, namely by declaring a Table as a Class, and uses <code>Session</code> to handle queries.</p>
+<h3 id="Flask-SQLAlchemy"><a href="#Flask-SQLAlchemy" class="headerlink" title="Flask + SQLAlchemy"></a>Flask + SQLAlchemy</h3><p>Having familiarized myself with SQLAlchemy, I moved on to using SQLAlchemy with Flask. Luckily I found this super tutorial that covered every aspects of flask <a href="https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world">The Flask Mega-Tutorial Part I: Hello, World! - miguelgrinberg.com</a>. I only followed the first few chapters of the tutorial step by step, and moved on to build my own web service as soon as I learned what I need. But I kept coming back to this one for some specific functionalities support. For example, I read about test-driven development in another article and tried to refactor my code, and then found out that Chapter 15 A Better Application Structure talked about how to refactor the file structure that uses Application Factory to support unit test.<br>Miguel also has other flask-related projects in his Github repo and more tutorials that turned out quite useful later on.</p>
+<p>With Flask, I used <a href="http://flask-sqlalchemy.pocoo.org/2.3/">Flask-SQLAlchemy</a> instead of pure sql-alchemy for better integration with flask.</p>
+<h3 id="Seperate-and-Connect-Backend-with-Frontend"><a href="#Seperate-and-Connect-Backend-with-Frontend" class="headerlink" title="Seperate and Connect Backend with Frontend"></a>Seperate and Connect Backend with Frontend</h3><p>By now, having written an archaic looking website in flask with Jinja2 template engine to render the webpages (by using <code>return render_template()</code>, if you remember), we decided that frontend and backend (client and server) should be separated, and it will be easier for us to <em>build front-end with a javascript framework (possibly React.js or Vue.js), and alter the back-end server to offer REST interface.</em><br>Honestly speaking, I was totally at a loss when starting to do this. I had no idea about front-end development and was not sure how the two parts connect. (I did not even know that I should build RESTful API!!!) And it is not that easy to find the right answer if you cannot even phrase your question correctly!! So the first thing I did was to research on this. Then I read this one: <a href="https://medium.com/@timmykko/django-flask-with-react-js-3c6da2d47b52">Django/Flask with React.js</a> The author offered two options: a) use Flask to create a REST API and making http request to it through REACT. b) use webpack and babel to template React files in Flask.<br>At the time, I feel like I’ve found the answers, even though the words didn’t really make sense to me. What is REST API? What is Webpack and bundling? Which one should I go for? I only decided to go with REST API because I had this rough idea that method b) will still render the webpages in Flask like I did using <code>render_template(&#39;hello world.html&#39;)</code>, while method b) renders the pages in React and make requests for data through the internet. That was not a clear understanding, but are enough for me to make my decision.<br>The fun thing about beginner’s learning process is that you don’t really have to know it is JinJa2 to start using it, but not knowing these concepts will give you a lot of confusion if you decide to jump out of the box later. It was really until recently can I understand the terms better. </p>
+<p><em>REST API</em><br>What are APIs? I am pretty sure you have seen them before:</p>
+<p><em>template engine</em><br>With Jinja2, I can write html files with:</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">&#123;% for item in list %&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">li</span>&gt;</span>item<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RESTful-API-service"><a href="#RESTful-API-service" class="headerlink" title="RESTful API service"></a>RESTful API service</h3><p>Fun story: Actually, I started with a Udacity RESTful API tutorial, then I somehow found out the tutorial is using exact same code as Miguel’s tutorial, but with video instruction. I think they took Miguel’s code example as part of their tutorial, which makes sense since Miguel is a recognized expert in this field who are willing to share… But Udacity did offer a hand-by-hand video instruction, which I enjoyed. And this guy gave some pretty good advice on writing good APIs: learn from good APIs, using nice URIs, returning appropriate status code… I did read Miguel’s tutorial later for supplementary information.<br>The Scotch tutorial is the one I started considering refactoring my code with App Factory. There are comments below saying he’s not using real TDD (Test-Driven-Development) or he’s using deprecated packages, but it did give me new perspective and are clear enough to follow along… One thing to remember about tutorials is that you do not have to take them all, always use your judgement and do the research.<br><a href="https://scotch.io/tutorials/build-a-restful-api-with-flask-the-tdd-way">Build a RESTful API with Flask – The TDD Way ― Scotch</a><br><a href="https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask">Designing a RESTful API with Python and Flask - miguelgrinberg.com</a><br><a href="https://classroom.udacity.com/courses/ud388">Designing RESTful APIs - Udacity</a><br>One other thing to notice is that, if you search what is GET and POST, you will see tons of articles trying to explain… sometimes partial and inadequate. I started making http request with a naive understanding of the keywords GET/POST/… I thought GET is when you put your request in url link to get information and POST is when you are posting information to change the data on server. Based on this idea, I first design my API to get auth token in a GET request, (because it is not altering information on server! And I can still send the json in request body!) Soon I learned that GET request will be logged in browser history and is definitely not secure for sending auth info. </p>
+<p>After that, I realized I knew too little about the web, and started reading more general articles about the web. Not in academic style though, just to get more background information. Many articles on this topic uses too much terms and are hard to read for newbies. Here is a learner-friendly one to start with. <a href="https://medium.freecodecamp.org/how-the-web-works-a-primer-for-newcomers-to-web-development-or-anyone-really-b4584e63585c">How the Web Works: A Primer for Newcomers to Web Development (or anyone, really)</a> Security and authentication is the topic I spent some time researching on… there will be a section later.</p>
+<h3 id="React-js-Vue-js"><a href="#React-js-Vue-js" class="headerlink" title="React.js/Vue.js"></a>React.js/Vue.js</h3><p>These two are quite similar in some way…</p>
+<h2 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h2><p><strong>SQLAlchemy</strong>:<br><a href="https://www.datacamp.com/courses/introduction-to-relational-databases-in-python">Introduction to Databases in Python | DataCamp</a> (great exercises to learn SQLAlchemy syntax, making the transition from SQL queries to SQLAlchemy, )<br><a href="http://docs.sqlalchemy.org/en/latest/">SQLAlchemy Documentation —    SQLAlchemy 1.2 Documentation</a> (the site you will always need to refer to…)</p>
+<p><strong>Flask + flask-SQLAlchemy</strong>:<br><a href="https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world">The Flask Mega-Tutorial Part I: Hello, World! - miguelgrinberg.com</a>  (Great hands-on tutorial to get you started with backend and database with flask &amp; sqlalchemy by implementing a blog site, well explained, easy to follow, )<br><a href="http://exploreflask.com/">Explore Flask — Explore Flask 1.0 documentation</a><br><a href="https://github.com/pallets/flask-website/tree/master/flask_website">flask-website/flask_website at master · pallets/flask-website · GitHub</a> (look at the structure of flask’s website)</p>
+<p><strong>Javascript</strong>:<br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript">A re-introduction to JavaScript (JS tutorial) - JavaScript | MDN</a> (introduction to JavaScript for those with knowledge of programming language in general)<br><a href="https://classroom.udacity.com/courses/ud803">Udacity Intro to Javascript</a> (fool-proof javascript introduction)<br>( I am not a fan of codecademy kind of code-only lecture-free learning process since it does not give me any insight about the language… But that is also a great option if you found that helpful as a starting point)</p>
+<p><strong>React</strong>:<br><a href="https://reactjs.org/tutorial/tutorial.html">Tutorial: Intro To React - React</a> (React’s official tutorial, build a tic-tac-toe game with react, gets you familiar with the framework and jsx. Tips: don’t just follow the instructions, try implement the ideas fro improvements it proposes at the end of the article.)<br><a href="https://daveceddia.com/timeline-for-learning-react/">Your Timeline for Learning React</a><br><a href="https://courses.edx.org/courses/course-v1:Microsoft+DEV281x+1T2018a/course/">Course | DEV281x  Introduction to ReactJS| edX</a> ()</p>
+<p><strong>Vue.js</strong>:<br><a href="https://github.com/vuejs/awesome-vue/tree/master">GitHub - vuejs/awesome-vue: 🎉 A curated list of awesome things related to Vue.js</a> (list)<br><a href="https://vuejs.org/v2/examples">Examples — Vue.js</a><br>Examples:<br><a href="https://medium.com/drupal-stories-an-insiders-view/how-to-build-a-single-page-application-spa-with-vue-js-5459ea739a3a">How to build SPA with Vue.js – Drupal stories: an insider’s view – Medium</a> (easy start, basic understanding of due project structure)<br><a href="https://paweljw.github.io/2017/09/vue.js-front-end-app-part-1-setting-up-the-app/">Vue.js front end app, part 1: Setting up the app</a></p>
+<p><em>RESTful API — Connecting Front-end and Back-end</em><br><a href="https://medium.com/@timmykko/django-flask-with-react-js-3c6da2d47b52">Django/Flask with React.js – Timothy Ko – Medium</a></p>
+<ol>
+<li>Method1: RESTful<br><a href="https://scotch.io/tutorials/build-a-restful-api-with-flask-the-tdd-way">Build a RESTful API with Flask – The TDD Way ― Scotch</a><br><a href="https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask">Designing a RESTful API with Python and Flask - miguelgrinberg.com</a><br><a href="https://classroom.udacity.com/courses/ud388">Designing RESTful APIs - Udacity</a></li>
+<li>Method2: bundle React (haven’t tried so not sure about this part…)<br>Vue.js &amp; Flask <a href="https://codeburst.io/full-stack-single-page-application-with-vue-js-and-flask-b1e036315532">Full-stack single page application with Vue.js and Flask</a><br><a href="https://codeburst.io/creating-a-full-stack-web-application-with-python-npm-webpack-and-react-beauty-and-495bfdf11841">Creating a full-stack web application with Python, NPM, Webpack and React — Beauty and…</a> (not well explained but offered as example)</li>
+</ol>
+<p><strong>More</strong>:<br>ES6 …</p>
+<p><strong>General Understanding</strong>:<br><a href="https://medium.freecodecamp.org/how-the-web-works-a-primer-for-newcomers-to-web-development-or-anyone-really-b4584e63585c">How the Web Works: A Primer for Newcomers to Web Development (or anyone, really)</a><br><a href="https://medium.freecodecamp.org/how-the-web-works-part-ii-client-server-model-the-structure-of-a-web-application-735b4b6d76e3">How the Web Works Part II: Client-Server Model &amp; the Structure of a Web Application</a><br><a href="https://medium.freecodecamp.org/how-the-web-works-part-iii-http-rest-e61bc50fa0a">How the Web Works Part III: HTTP &amp; REST – freeCodeCamp</a><br>(a great series that clearly explains how the web works in general)<br><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">Cross-Origin Resource Sharing (CORS) - HTTP | MDN</a><br><a href="https://stackoverflow.com/questions/549/the-definitive-guide-to-form-based-website-authentication#477579">security - The definitive guide to form-based website authentication - Stack Overflow</a></p>
+<p><strong>Useful links</strong><br><a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">List of HTTP status codes - Wikipedia</a><br><a href="http://flask.pocoo.org/docs/1.0/api/#flask.Request.args">API — Flask 1.0.2 documentation</a></p>
+<p><strong>Unsorted</strong><br><a href="https://github.com/joshporter1/codenames">GitHub - joshporter1/codenames: 👾 Realtime Codenames game that you can play on your phone, TV, or laptop</a><br><a href="https://www.quora.com/Is-it-okay-to-use-Flask-with-Vue-js-If-it-is-is-there-a-convention-for-making-applications-with-Flask-and-Vue-js">Is it okay to use Flask with Vue.js? If it is, is there a convention for making applications with Flask and Vue.js? - Quora</a><br>Examples<br><a href="https://www.pluralsight.com/guides/build-a-simple-file-storage-service-using-vuejs-flask-and-rethinkdb">Build a simple File storage service using VueJS, Flask and RethinkDB | Pluralsight</a><br><a href="https://pusher.com/tutorials/realtime-app-vuejs/">Build a realtime app with Vue.js</a><br><a href="https://medium.com/techtrument/handling-ajax-request-in-vue-applications-using-axios-1d26c47fab0">Handling Ajax Request in Vue Applications Using Axios.</a><br><a href="http://stackabuse.com/single-page-apps-with-vue-js-and-flask-navigating-vue-router/">Single Page Apps with Vue.js and Flask: Navigating Vue Router</a></p>
+<p>Encryption &amp; Authentication<br><a href="https://jwt.io/introduction/">JSON Web Token Introduction - jwt.io</a></p>
+<ul>
+<li>Rest Part<br><code>In a regular web application you would have a login form that posts the credentials, and at that point the server would create a session for the logged in user to continue working, with the session id stored in a cookie in the client browser. Unfortunately doing that here would violate the stateless requirement of REST, so instead we have to ask clients to send their authentication information with every request they send to us...</code><br><a href="http://blog.tecladocode.com/learn-python-encrypting-passwords-python-flask-and-passlib/">Encrypting passwords in Python with passlib</a><br><a href="https://blog.miguelgrinberg.com/post/restful-authentication-with-flask">RESTful Authentication with Flask - miguelgrinberg.com</a></li>
+<li>Vue Part<br><a href="https://blog.sqreen.io/authentication-best-practices-vue/">Authentication Best Practices for Vue - Sqreen Blog | Modern Application Security</a></li>
+<li>Q&amp;As<br><a href="https://stormpath.com/blog/token-auth-spa">Token Based Authentication for Single Page Apps (SPAs)</a><br><a href="https://blog.risingstack.com/web-authentication-methods-explained/">Web Authentication Methods Explained | RisingStack</a><br><a href="https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/">Refresh Tokens: When to Use Them and How They Interact with JWTs</a><br><a href="https://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication">http - How to log out user from web site using BASIC authentication? - Stack Overflow</a><br><a href="https://blog.risingstack.com/node-js-security-checklist/">Node.js Security Checklist | @RisingStack</a><br>Error Handling</li>
+</ul>
+]]></content>
+  </entry>
+</search>
