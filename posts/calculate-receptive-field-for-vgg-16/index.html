@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ziikki.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="Calculate Receptive Field for Vgg-16 and potentially other nerual networks. Python code is provided along with a clear graph explaining the vgg16 structure.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Calculate Receptive Field for VGG16">
+<meta property="og:url" content="http://ziikki.com/posts/calculate-receptive-field-for-vgg-16/index.html">
+<meta property="og:site_name" content="Ziikki&#39;s Walnut Shell">
+<meta property="og:description" content="Calculate Receptive Field for Vgg-16 and potentially other nerual networks. Python code is provided along with a clear graph explaining the vgg16 structure.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://ziikki.com/upload_img/cnn/vgg-16-receptive-field.png">
+<meta property="og:image" content="http://ziikki.com/upload_img/cnn/vgg-vd-16-receptive-field.png">
+<meta property="article:published_time" content="2018-10-11T19:24:10.000Z">
+<meta property="article:modified_time" content="2018-10-24T13:07:23.000Z">
+<meta property="article:author" content="Zikki">
+<meta property="article:tag" content="cnn, deep learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ziikki.com/upload_img/cnn/vgg-16-receptive-field.png">
+
+
+<link rel="canonical" href="http://ziikki.com/posts/calculate-receptive-field-for-vgg-16/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>Calculate Receptive Field for VGG16 | Ziikki's Walnut Shell</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Ziikki's Walnut Shell</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-Receptive-Field-and-How-do-we-calculate"><span class="nav-number">1.</span> <span class="nav-text">What is Receptive Field and How do we calculate?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Math"><span class="nav-number">2.</span> <span class="nav-text">Math</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Side-Note-%E2%80%93-Dimension"><span class="nav-number">2.1.</span> <span class="nav-text">Side Note – Dimension</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Composing-receptive-fields"><span class="nav-number">2.2.</span> <span class="nav-text">Composing receptive fields</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Overlaying-receptive-fields"><span class="nav-number">2.3.</span> <span class="nav-text">Overlaying receptive fields</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Automation-Code"><span class="nav-number">3.</span> <span class="nav-text">Automation (Code)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results"><span class="nav-number">4.</span> <span class="nav-text">Results</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zikki</p>
+  <div class="site-description" itemprop="description">Have Fun in Life. Code. Tech. Cats. I am also growing strawberry.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://ziikki.com/posts/calculate-receptive-field-for-vgg-16/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zikki">
+      <meta itemprop="description" content="Have Fun in Life. Code. Tech. Cats. I am also growing strawberry.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ziikki's Walnut Shell">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Calculate Receptive Field for VGG16
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-10-11 12:24:10" itemprop="dateCreated datePublished" datetime="2018-10-11T12:24:10-07:00">2018-10-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2018-10-24 06:07:23" itemprop="dateModified" datetime="2018-10-24T06:07:23-07:00">2018-10-24</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="description">Calculate Receptive Field for Vgg-16 and potentially other nerual networks. Python code is provided along with a clear graph explaining the vgg16 structure.</p>
+
+<p><img src="/upload_img/cnn/vgg-16-receptive-field.png" alt="vgg16"></p>
+<a id="more"></a>
+
+<h2 id="What-is-Receptive-Field-and-How-do-we-calculate"><a href="#What-is-Receptive-Field-and-How-do-we-calculate" class="headerlink" title="What is Receptive Field and How do we calculate?"></a>What is Receptive Field and How do we calculate?</h2><p>BackGround Quote: (feel free to skip if you don’t want to read)</p>
+<blockquote>
+<p>To understand how components in a CNN depend on components in the layers before it, and in particular on components of the input. Since CNNs can incorporate blocks that perform complex operations …, this information is generally available only at “run time” and cannot be uniquely determined given only the structure of the network. Furthermore, blocks can implement complex operations that are difficult to characterise in simple terms. Therefore, the analysis will be necessarily limited in scope.</p>
+<p>We consider blocks such as convolutions for which one can deterministically establish<br>dependency chains between network components. We also assume that all the inputs $x$ and outputs $y$ are in the usual form of spatial maps, and therefore indexed as $x_{i,j,d,k}$ where i, j are spatial coordinates.</p>
+<p>Consider a layer y = f(x). We are interested in establishing which components of x<br>influence which components of y. We also assume that this relation can be expressed in terms of a sliding rectangular window field, called receptive field. This means that the output component yi′′,j′′ depends only on the input components xi,j where (i, j) ∈ Ω(i′′, j′′) (note that feature channels are implicitly coalesced in this discussion). The set Ω(i′′,j′′) is a rectangle defined as follows: </p>
+<p>$$ i \in \alpha(i’’ - 1) + \beta_h + [-\frac{\delta_h - 1}{2}, \frac{\delta_h - 1}{2}] $$ </p>
+<p>$$ j \in \alpha(j’’ - 1) + \beta_v + [-\frac{\delta_v - 1}{2}, \frac{\delta_v - 1}{2}] $$</p>
+<p>where (αh,αv) is the stride, (βh,βv) the offset, and (∆h,∆v) the receptive field size. </p>
+<p><em>—— Matconvnet Manual 5.1</em></p>
+</blockquote>
+<p>From my understanding, receptive field is a way of measuring network compoents dependency, i.e. A block on current map is determined by how many blocks from a previous layer?</p>
+<p>To calculate this, we need a set of parameters for each layer: filter_size $k$, stride $s$, offset(padding) $p$, and calculate the compound parameter when layers are stacked together. (* Note that I use different variable names from the manual.)</p>
+<p>For a <u>simple filter</u>, filter_size $k$, stride $s$, and left padding $p$ are straight-forward </p>
+<p>Many blocks in the neural network (e.g. max pooling, LNR, ReLU, most loss functions etc.), they have a filter-like receptive field geometry. </p>
+<ul>
+<li><strong>ReLU</strong> can be considered a 1 × 1 filter, in this case $k =1, s =1$ and $p=0$.</li>
+<li><strong>2x2 Max Pooling</strong> can be considered a 2 × 2 filter, such that $k=s=2$. But padding strategy varies for different libraries. Even when padding is zero, some libraries will get out of range to make sure every block is counted. Luckily for vgg16 this is not a problem to worry about.</li>
+<li><strong>Flatten and FCL</strong> is not a filter. But for computational simplicity, it can be considered a filter where the filter size is the value of size of input. Since FCL is ususally the last step, so this definition will not cause problems later on, but will only work for receptive calculation.</li>
+</ul>
+<p>We can proceed to work on the math equations for composition of layers. Some details were left out for simplicity.</p>
+<h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><p>Along one dimension, given filter_size $k​$, stride $s​$, left padding $p^-$, and a sample point $i_o​$, </p>
+<p>the range of points in the input field that affect $i_o$are:</p>
+<p>$i_{in} \in   s*i_o - p + [0, k-1] $</p>
+<p>$= s*i_o + (\frac{k-1}{2} - p^-) + [-\frac{k-1}{2}, \frac{k-1}{2}] $</p>
+<p>$= s*i_o + p’ + [-\frac{k-1}{2}, \frac{k-1}{2}]$</p>
+<p>where we define $p = \frac{k-1}{2} - p^-$ as the offset, and the range is inclusive. The calculation is the same for each dimension.</p>
+<h3 id="Side-Note-–-Dimension"><a href="#Side-Note-–-Dimension" class="headerlink" title="Side Note – Dimension"></a>Side Note – Dimension</h3><p>To get the dimension of next map, the equation would be to max $h$ such that the maximum range this equation can reach in the inmap is smaller than the actually length of inmap. We can write this into equation as <code>index_max - index_min + 1 &lt;= length_of_inmap</code>.</p>
+<p>$$s*(h-1) - p^- + k-1 - (0 - p^- + 0) + 1 \leq n + p^- + p^+$$</p>
+<p>If padding is symmetrical, $P=p^- = p^+$, then we get:</p>
+<p>$$h \leq \frac{n+2P-k}{s} + 1 = [\frac{n+2P-k}{s}] + 1$$</p>
+<blockquote>
+<p>Note: The manual is written for matlab, coordinates starts at 1 for the equation. I re-wrote the equations for convenience so that the coordinates start at 0. This does not affect the calculation of receptive fields. </p>
+</blockquote>
+<h3 id="Composing-receptive-fields"><a href="#Composing-receptive-fields" class="headerlink" title="Composing receptive fields"></a>Composing receptive fields</h3><p>To calculate the combination of two layers: $k_0, s_0$ and $k_1, s_1$, we can use:</p>
+<p>$$i_0 = s_0 ( i_1 - 1) + p_0 \pm \frac{k_0 - 1}{2}$$</p>
+<p>$$i_1 = s_1 (i_2 - 1) + p_0 \pm \frac{k_1-1}{2}$$</p>
+<p>Replace the $i_1$ with the second equation, we get: </p>
+<p>$i_0 = s_0 ( s_1 (i_2 - 1) + p_1 \pm \frac{k_1-1}{2} - 1)+p_0 \pm \frac{k_0-1}{2} $</p>
+<p>$ = s_0 s_1(i_2-1)+(s_0(p_1-1) + p_0) \pm\frac{(s_0(k_1-1) + k_0)-1}{2} $</p>
+<p>From the result we can deduct that the compountd k’ and s’ would be:</p>
+<p>$s’ = s_0s_1$</p>
+<p>$k’ = s_0(k_1-1)+k_0$</p>
+<p>$p’ = s_0(p_1-1)+p_0$</p>
+<h3 id="Overlaying-receptive-fields"><a href="#Overlaying-receptive-fields" class="headerlink" title="Overlaying receptive fields"></a>Overlaying receptive fields</h3><p>To calculate overlaying receptive fields as the ones in googlenet, see details in Chapter 5.6.</p>
+<h2 id="Automation-Code"><a href="#Automation-Code" class="headerlink" title="Automation (Code)"></a>Automation (Code)</h2><p>It’s tedious to calculate all 16 layers by hand, since we already have the straight-forward equation, the best way is to write some code for it:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">vgg_16 = [</span><br><span class="line">	<span class="comment"># 1</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># 2</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>],  [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># 3</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># 4</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># 5</span></span><br><span class="line">	[<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">3</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>],</span><br><span class="line">	<span class="comment"># fc6, fake convolutional layer   </span></span><br><span class="line">	[<span class="number">7</span>, <span class="number">1</span>]</span><br><span class="line">]</span><br><span class="line">vgg16_layers = [</span><br><span class="line">	<span class="string">&quot;3x3 conv 64&quot;</span>, <span class="string">&quot;3x3 conv 64&quot;</span>, <span class="string">&quot;pool1&quot;</span>,</span><br><span class="line">	<span class="string">&quot;3x3 conv 128&quot;</span>, <span class="string">&quot;3x3 conv 128&quot;</span>, <span class="string">&quot;pool2&quot;</span>,</span><br><span class="line">	<span class="string">&quot;3x3 conv 256&quot;</span>, <span class="string">&quot;3x3 conv 256&quot;</span>, <span class="string">&quot;3x3 conv 256&quot;</span>, <span class="string">&quot;pool3&quot;</span>,</span><br><span class="line">	<span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;pool4&quot;</span>,</span><br><span class="line">	<span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;3x3 conv 512&quot;</span>, <span class="string">&quot;pool5&quot;</span>,</span><br><span class="line">	<span class="string">&quot;7x7 fc&quot;</span></span><br><span class="line">]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cal_receptive_field</span>(<span class="params">kspairs, layers=<span class="literal">None</span></span>):</span></span><br><span class="line">	<span class="comment"># K: composed kernel, also the receptive field </span></span><br><span class="line">	<span class="comment"># S: composed stride</span></span><br><span class="line">	K, S = <span class="number">1</span>, <span class="number">1</span></span><br><span class="line">	<span class="comment"># H = 224</span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> layers:</span><br><span class="line">		layers = <span class="built_in">range</span>(<span class="built_in">len</span>(kspairs))</span><br><span class="line">	<span class="keyword">for</span> layer, kspair <span class="keyword">in</span> <span class="built_in">zip</span>(layers, kspairs):</span><br><span class="line">		k, s = kspair</span><br><span class="line">		K = (k-<span class="number">1</span>) * S + K</span><br><span class="line">		S = S * s</span><br><span class="line">		<span class="comment"># H = H//s</span></span><br><span class="line">		<span class="comment"># iamge size &#123;0&#125;&#x27;.format(H)</span></span><br><span class="line">		</span><br><span class="line">		print(<span class="string">&#x27;layer &#123;:&lt;15&#125;: &#123;&#125; [&#123;:3&#125;,&#123;:2&#125;]&#x27;</span>.<span class="built_in">format</span>(layer, kspair, K, S))</span><br><span class="line">		</span><br><span class="line">cal_receptive_field(vgg_16, vgg16_layers)</span><br></pre></td></tr></table></figure>
+<p>Note that we omit offset p for simplicity. </p>
+<p>Output:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">layer 3x3 conv 64    : [3, 1] [  3, 1]</span><br><span class="line">layer 3x3 conv 64    : [3, 1] [  5, 1]</span><br><span class="line">layer pool1          : [2, 2] [  6, 2]</span><br><span class="line">layer 3x3 conv 128   : [3, 1] [ 10, 2]</span><br><span class="line">layer 3x3 conv 128   : [3, 1] [ 14, 2]</span><br><span class="line">layer pool2          : [2, 2] [ 16, 4]</span><br><span class="line">layer 3x3 conv 256   : [3, 1] [ 24, 4]</span><br><span class="line">layer 3x3 conv 256   : [3, 1] [ 32, 4]</span><br><span class="line">layer 3x3 conv 256   : [3, 1] [ 40, 4]</span><br><span class="line">layer pool3          : [2, 2] [ 44, 8]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [ 60, 8]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [ 76, 8]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [ 92, 8]</span><br><span class="line">layer pool4          : [2, 2] [100,16]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [132,16]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [164,16]</span><br><span class="line">layer 3x3 conv 512   : [3, 1] [196,16]</span><br><span class="line">layer pool5          : [2, 2] [212,32]</span><br><span class="line">layer 7x7 fc         : [7, 1] [404,32]</span><br></pre></td></tr></table></figure>
+<p>Thanks for the brilliant inspiration from <a target="_blank" rel="noopener" href="https://gist.github.com/ih4cku/d53f691cc79b9b433e3703740195b9f7">ih4cku</a>!</p>
+<h2 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h2><p><img src="/upload_img/cnn/vgg-vd-16-receptive-field.png" alt="vgg16"></p>
+<p>References:</p>
+<p><a target="_blank" rel="noopener" href="https://www.reddit.com/r/MachineLearning/comments/3xob7t/calculating_receptive_fields_in_cnns/">Reddit Post</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.vlfeat.org/matconvnet/matconvnet-manual.pdf">matconvnet manual chapter 5</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/cnn-deep-learning/" rel="tag"># cnn, deep learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/online-fuzzywuzzy-scorer/" rel="prev" title="FuzzIt -- Online Fuzzy Search Tool (FuzzBall.js) Scorer">
+                  <i class="fa fa-chevron-left"></i> FuzzIt -- Online Fuzzy Search Tool (FuzzBall.js) Scorer
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/baidu_verify_6q0HWIByDK/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zikki</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

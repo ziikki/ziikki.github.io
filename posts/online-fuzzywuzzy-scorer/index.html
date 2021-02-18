@@ -23,18 +23,20 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"ziikki.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="Have Fun in Life. Code. Tech. Cats. I am also growing strawberry.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ziikki&#39;s Walnut Shell">
-<meta property="og:url" content="http://ziikki.com/archives/index.html">
+<meta name="description" content="I wrote this when I was implementing fuzzy search on a project I am working onto compare the scorers, it’s a small tool but convenient to use. Just thinking maybe I should share it!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FuzzIt -- Online Fuzzy Search Tool (FuzzBall.js) Scorer">
+<meta property="og:url" content="http://ziikki.com/posts/online-fuzzywuzzy-scorer/index.html">
 <meta property="og:site_name" content="Ziikki&#39;s Walnut Shell">
-<meta property="og:description" content="Have Fun in Life. Code. Tech. Cats. I am also growing strawberry.">
+<meta property="og:description" content="I wrote this when I was implementing fuzzy search on a project I am working onto compare the scorers, it’s a small tool but convenient to use. Just thinking maybe I should share it!">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-08-08T08:19:26.000Z">
+<meta property="article:modified_time" content="2018-10-15T20:56:41.000Z">
 <meta property="article:author" content="Zikki">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://ziikki.com/archives/">
+<link rel="canonical" href="http://ziikki.com/posts/online-fuzzywuzzy-scorer/">
 
 
 <script class="page-configurations">
@@ -42,11 +44,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
-<title>Archive | Ziikki's Walnut Shell</title>
+<title>FuzzIt -- Online Fuzzy Search Tool (FuzzBall.js) Scorer | Ziikki's Walnut Shell</title>
   
 
 
@@ -190,229 +192,100 @@
 </noscript>
 
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner post posts-expand">
 
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 10 posts in total. Keep on posting.</span>
-      </div>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2018</span>
-    </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://ziikki.com/posts/online-fuzzywuzzy-scorer/">
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-10-26T17:52:55-07:00"
-              content="2018-10-26">
-          10-26
-        </time>
-      </div>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zikki">
+      <meta itemprop="description" content="Have Fun in Life. Code. Tech. Cats. I am also growing strawberry.">
+    </span>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/use-gif-to-illustrate-algorithm-with-powerpoint/" itemprop="url">
-            <span itemprop="name">Create gif to illustrate algorithms with Microsoft PowerPoint</span>
-          </a>
-      </div>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ziikki's Walnut Shell">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FuzzIt -- Online Fuzzy Search Tool (FuzzBall.js) Scorer
+        </h1>
 
-      
-    </header>
-  </article>
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-10-15T14:06:35-07:00"
-              content="2018-10-15">
-          10-15
-        </time>
-      </div>
+      <time title="Created: 2018-08-08 01:19:26" itemprop="dateCreated datePublished" datetime="2018-08-08T01:19:26-07:00">2018-08-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2018-10-15 13:56:41" itemprop="dateModified" datetime="2018-10-15T13:56:41-07:00">2018-10-15</time>
+      </span>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/googlec4c03ff921ddaaf9/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
+  
+</div>
 
-      
-    </header>
-  </article>
+        </div>
+      </header>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-10-15T14:06:33-07:00"
-              content="2018-10-15">
-          10-15
-        </time>
-      </div>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="description"></p>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/baidu_verify_6q0HWIByDK/" itemprop="url">
-            <span itemprop="name">Untitled</span>
-          </a>
-      </div>
+<p>I wrote this when I was implementing fuzzy search on a project I am working onto compare the scorers, it’s a small tool but convenient to use. Just thinking maybe I should share it!</p>
+<a id="more"></a>
 
-      
-    </header>
-  </article>
+<iframe src="https://codesandbox.io/embed/1v1j98nrmj" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-10-11T12:24:10-07:00"
-              content="2018-10-11">
-          10-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/calculate-receptive-field-for-vgg-16/" itemprop="url">
-            <span itemprop="name">Calculate Receptive Field for VGG16</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-08-08T01:19:26-07:00"
-              content="2018-08-08">
-          08-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/online-fuzzywuzzy-scorer/" itemprop="url">
-            <span itemprop="name">FuzzIt -- Online Fuzzy Search Tool (FuzzBall.js) Scorer</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-06-25T14:12:35-07:00"
-              content="2018-06-25">
-          06-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/Full-Stack-Beginner-s-Guide-Flask-React-SQLAlchemy/" itemprop="url">
-            <span itemprop="name">Full-Stack Beginner's Guide (Flask+React+SQLAlchemy)</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-05-08T01:03:33-07:00"
-              content="2018-05-08">
-          05-08
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/TalkingData-AdTracking-Fraud-Detection-Challenge/" itemprop="url">
-            <span itemprop="name">TalkingData_AdTracking_Fraud_Detection_Challenge</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-03-29T16:26:35-07:00"
-              content="2018-03-29">
-          03-29
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/setting-up-AWS-for-data-mining/" itemprop="url">
-            <span itemprop="name">Setting Up AWS for Data Mining (and jupyter notebooks)</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-03-25T16:46:51-07:00"
-              content="2018-03-25">
-          03-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/weekly-review/" itemprop="url">
-            <span itemprop="name">Weekly Review</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2018-02-25T18:16:58-08:00"
-              content="2018-02-25">
-          02-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/hello-world/" itemprop="url">
-            <span itemprop="name">Hello World</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
 
 
     </div>
-  </div>
-  
-  
-  
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/Full-Stack-Beginner-s-Guide-Flask-React-SQLAlchemy/" rel="prev" title="Full-Stack Beginner's Guide (Flask+React+SQLAlchemy)">
+                  <i class="fa fa-chevron-left"></i> Full-Stack Beginner's Guide (Flask+React+SQLAlchemy)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/calculate-receptive-field-for-vgg-16/" rel="next" title="Calculate Receptive Field for VGG16">
+                  Calculate Receptive Field for VGG16 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
 
 
 <script>
