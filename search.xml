@@ -11,8 +11,38 @@
 <p><a href="/files/ece-681-final-report.pdf">Report</a></p>
 ]]></content>
       <tags>
-        <tag>Machine Learning, Kaggle, Classification</tag>
+        <tag>Machine Learning</tag>
+        <tag>Kaggle</tag>
+        <tag>Classification</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/posts/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<p><strong>Functions</strong>: </p>
+<p>password: yourcode</p>
+<p>top: 100 indexforimportance 0-defaulted</p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
+<p>Just in case I forgot how:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g			<span class="comment">#generate static file locally</span></span><br><span class="line">hexo d(eploy)	<span class="comment">#push to github</span></span><br></pre></td></tr></table></figure>
+<p>Here is the link to some tutorials</p>
+<p><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/index.html">Hexo搭建博客教程</a></p>
+<p><a href="http://www.lovebxm.com/2017/05/30/buildBlog/index.html">可能是最详细的 Hexo + GitHub Pages 搭建博客的教程</a></p>
+<p><a href="https://reuixiy.github.io/technology/computer/computer-aided-art/2017/06/09/hexo-next-optimization.html">打造个性超赞博客Hexo+NexT+GithubPages的超深度优化</a></p>
+<p><a href="http://www.cduyzh.com/hexo-settings-3/">自定义页面样式一</a></p>
+<p>Others:</p>
+<p><a href="https://goozy.github.io/2017/03/22/%E4%BB%8E%E4%BB%8A%E5%A4%A9%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8HyperComments%E5%95%A6%EF%BC%81/">Add Hypercomment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>Calculate Receptive Field for VGG16</title>
@@ -78,36 +108,9 @@
 <p><a href="http://www.vlfeat.org/matconvnet/matconvnet-manual.pdf">matconvnet manual chapter 5</a></p>
 ]]></content>
       <tags>
-        <tag>cnn, deep learning</tag>
+        <tag>cnn</tag>
+        <tag>deep learning</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/posts/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<p><strong>Functions</strong>: </p>
-<p>password: yourcode</p>
-<p>top: 100 indexforimportance 0-defaulted</p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html">Deployment</a></p>
-<p>Just in case I forgot how:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g			<span class="comment">#generate static file locally</span></span><br><span class="line">hexo d(eploy)	<span class="comment">#push to github</span></span><br></pre></td></tr></table></figure>
-<p>Here is the link to some tutorials</p>
-<p><a href="https://thief.one/2017/03/03/Hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/index.html">Hexo搭建博客教程</a></p>
-<p><a href="http://www.lovebxm.com/2017/05/30/buildBlog/index.html">可能是最详细的 Hexo + GitHub Pages 搭建博客的教程</a></p>
-<p><a href="https://reuixiy.github.io/technology/computer/computer-aided-art/2017/06/09/hexo-next-optimization.html">打造个性超赞博客Hexo+NexT+GithubPages的超深度优化</a></p>
-<p><a href="http://www.cduyzh.com/hexo-settings-3/">自定义页面样式一</a></p>
-<p>Others:</p>
-<p><a href="https://goozy.github.io/2017/03/22/%E4%BB%8E%E4%BB%8A%E5%A4%A9%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8HyperComments%E5%95%A6%EF%BC%81/">Add Hypercomment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>FuzzIt -- Online Fuzzy Search Tool (FuzzBall.js) Scorer</title>
@@ -121,199 +124,9 @@
 
 
 ]]></content>
-  </entry>
-  <entry>
-    <title>Setting Up AWS for Data Mining (and jupyter notebooks)</title>
-    <url>/posts/setting-up-AWS-for-data-mining/</url>
-    <content><![CDATA[<p class="description">My experience of setting up deep learning environment on AWS, including how to create an instance, keep the data aftering you shut it down, set up budget warning and edit your file on the server without being charged.</p>
-
-<a id="more"></a>
-
-<h3 id="Set-up-AWS-account"><a href="#Set-up-AWS-account" class="headerlink" title="Set up AWS account"></a>Set up AWS account</h3><p>Go to <a href="https://aws.amazon.com/">https://aws.amazon.com</a> and set up your account</p>
-<blockquote>
-<p><strong>Tips</strong>: If you are a student, you may check <a href="https://aws.amazon.com/education/awseducate/">AWS Educate</a> and see if you’re eligible for $100.</p>
-<p>It may take a few days for Amazon to confirm school info and send the promo code.</p>
-</blockquote>
-<h3 id="THE-EASY-WAY-for-spot-instance"><a href="#THE-EASY-WAY-for-spot-instance" class="headerlink" title="THE EASY WAY (for spot instance)"></a>THE EASY WAY (for spot instance)</h3><p>fast.ai provides scripts to automate the whole process.</p>
-<p><a href="http://wiki.fast.ai/index.php/AWS_Spot_instances">AWS Spot instances Tutorial</a></p>
-<h4 id="Initialization-Only-done-once"><a href="#Initialization-Only-done-once" class="headerlink" title="Initialization (Only done once)"></a>Initialization (Only done once)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install jq</span><br><span class="line">git <span class="built_in">clone</span> --depth=1 https://github.com/slavivanov/ec2-spotter.git</span><br></pre></td></tr></table></figure>
-<h5 id="Create-an-Instance"><a href="#Create-an-Instance" class="headerlink" title="Create an Instance"></a>Create an Instance</h5><ul>
-<li>ami —Depending on which region we have picked and whether we want to use Fast.ai image or the Amazon one, we need to select an image <em>(Amazon images below are updated to version 1.3 from April 2017)</em>:</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>Region/Provider</th>
-<th>Fast.ai</th>
-<th>Amazon</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>us-east-1</td>
-<td>ami-31ecfb26</td>
-<td>ami-fb8e19ed</td>
-</tr>
-<tr>
-<td>us-west-2</td>
-<td>ami-bc508adc</td>
-<td>ami-638c1e03</td>
-</tr>
-<tr>
-<td>eu-west-1</td>
-<td>ami-b43d1ec7</td>
-<td>ami-c5afaaa3</td>
-</tr>
-</tbody></table>
-<ul>
-<li>subnetId — Use the subnet ID that create_vpc.sh printed.</li>
-</ul>
-<ul>
-<li>securityGroupId — Use the security group ID that create_vpc.sh printed.</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. ec2-spotter/fast_ai/create_vpc.sh</span><br><span class="line">. ec2-spotter/fast_ai/start_spot_no_swap.sh --ami ami-53b23433 --subnetId subnet-9f69c3d6 --securityGroupId sg-a62f2ede</span><br><span class="line"><span class="comment"># instance_ip seen in the output</span></span><br><span class="line">instance_ip=instance_ip_from_previous_step</span><br><span class="line">ssh -i ~/.ssh/aws-key-fast-ai.pem ubuntu@<span class="variable">$instance_ip</span></span><br></pre></td></tr></table></figure>
-<h5 id="Detach-the-volume-and-make-it-permanent"><a href="#Detach-the-volume-and-make-it-permanent" class="headerlink" title="Detach the volume and make it permanent"></a>Detach the volume and make it permanent</h5><p>The script will also terminate the instance from Step 1</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh ec2-spotter/fast_ai/config_from_instance.sh</span><br></pre></td></tr></table></figure>
-<p>Once you see the message, it is done.</p>
-<h4 id="Launch-an-instance-whenever-you-need-one"><a href="#Launch-an-instance-whenever-you-need-one" class="headerlink" title="Launch an instance (whenever you need one)"></a>Launch an instance (whenever you need one)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh fast_ai/start_spot.sh</span><br></pre></td></tr></table></figure>
-<p>Wait until the <code>Initializing</code> disappears from status-checks tag on Instances panel.</p>
-<h5 id="Connect"><a href="#Connect" class="headerlink" title="Connect"></a>Connect</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -i YOUR-KEY.pem ubuntu@YOUR-PUBLIC-DNS -L8888:localhost:8888  </span><br></pre></td></tr></table></figure>
-<h5 id="Terminate-the-instance"><a href="#Terminate-the-instance" class="headerlink" title="Terminate the instance"></a>Terminate the instance</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Change $instance_id to your instance id obviously.</span></span><br><span class="line">aws ec2 terminate-instances --instance-ids <span class="variable">$instance_id</span></span><br></pre></td></tr></table></figure>
-<p>This is by far the most effortless way to set up an AWS</p>
-<hr>
-<p>If you want do more customization, then you can manually set it up.</p>
-<h3 id="Create-Instance"><a href="#Create-Instance" class="headerlink" title="Create Instance"></a>Create Instance</h3><p><a href="http://wiki.fast.ai/index.php/AWS_install">http://wiki.fast.ai/index.php/AWS_install</a> fast.ai’s tutorial on setting up AWS, it provides some <a href="https://github.com/fastai/courses/tree/master/setup">scripts</a> to simplify the steps to launch your AWS. It also gives solutions to common problems when trying to set up AWS server.</p>
-<p><a href="http://forums.fast.ai/t/great-summary-of-how-to-use-aws/7651">http://forums.fast.ai/t/great-summary-of-how-to-use-aws/7651</a> A clear instruction to help set up AWS server and run jupyter notebooks.</p>
-<p>The standard choice is to launch an instance on the EC2 tag. But a more budget-friendly choice is to launch a spot instance. </p>
-<p>Later, <a href="#Keep-the-AMI-running-switch-to-t2-micro">this chapter</a> will cover how to combine some of choices the to save money.</p>
-<h4 id="Spot-Instance"><a href="#Spot-Instance" class="headerlink" title="Spot Instance"></a>Spot Instance</h4><p><a href="https://aws.amazon.com/ec2/spot/">https://aws.amazon.com/ec2/spot/</a></p>
-<h4 id="500h-Free-Tier"><a href="#500h-Free-Tier" class="headerlink" title="500h Free Tier"></a>500h Free Tier</h4><p><a href="https://aws.amazon.com/free/faqs/?ft=n">t2-micro instance</a></p>
-<h3 id="Run-your-instance"><a href="#Run-your-instance" class="headerlink" title="Run your instance"></a>Run your instance</h3><p>Find following instructions by clicking <code>Connect</code> in the <code>Instances</code> panel.</p>
-<p>To access your instance:</p>
-<ol>
-<li>Open an SSH client, you can use Terminal on Mac OS.</li>
-<li>Rename your private key file from <code>your_key.pem.txt</code> to <code>your_key.pem</code>, and move to desired position. The wizard automatically detects the key you used to launch the instance.</li>
-<li>Your key must not be publicly viewable for SSH to work. Use this command if needed:</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod 400 YOUR-KEY.pem</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>Connect to your instance using its Public DNS:</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -i YOUR-KEY.pem ubuntu@YOUR-PUBLIC-DNS -L8888:localhost:8888  </span><br></pre></td></tr></table></figure>
-<p>YOUR-PUBLIC-DNS can be found at <code>EC2</code> - <code>Instances</code> panel, click <code>connect</code>.</p>
-<h3 id="Using-fast-ai-AMI"><a href="#Using-fast-ai-AMI" class="headerlink" title="Using fast.ai AMI"></a>Using fast.ai AMI</h3><p>keep updated</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> fastai</span><br><span class="line">git pull</span><br><span class="line">conda env update <span class="comment"># once a month</span></span><br></pre></td></tr></table></figure>
-<p>check for status</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span> python</span><br><span class="line">python --version</span><br><span class="line">pip list --format=legacy</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="Persistent-Volume"><a href="#Persistent-Volume" class="headerlink" title="Persistent Volume"></a>Persistent Volume</h3><p><a href="http://wiki.fast.ai/index.php/AWS_Spot_instances">AWS Spot instances Tutorial</a></p>
-<p>Spot instance is a budget friendly choice. One downside about AWS spot instance is that, once you shut down the instance, everything gets lost. The tutorial provides two ways to solve the problem, the first is to create an external EBS volume, the second is to swap root volume. My personal preference is the second one. See comparison and details in the link.</p>
-<h3 id="Keep-the-AMI-running-with-lower-cost"><a href="#Keep-the-AMI-running-with-lower-cost" class="headerlink" title="Keep the AMI running (with lower cost)"></a>Keep the AMI running (with lower cost)</h3><p><a href="http://forums.fast.ai/t/switching-between-free-t2-micro-and-paid-p2-xlarge-on-aws/7116/15">Tutorial</a></p>
-<p>If you want to be able to edit file on the server, but do not wish to pay for the GPU which you are not using, one option is to switch to free t2-micro temporarily.</p>
-<p>Not fulfilled yet.</p>
-<h3 id="Budget-Warning"><a href="#Budget-Warning" class="headerlink" title="Budget Warning"></a>Budget Warning</h3><h4 id="Create-Budget"><a href="#Create-Budget" class="headerlink" title="Create Budget"></a>Create Budget</h4><p><code>Billing</code> -&gt; <code>Dashboard</code> - <code>Budgets</code> -&gt; <code>Create Budgets</code></p>
-<h4 id="Simple-Notification-Service"><a href="#Simple-Notification-Service" class="headerlink" title="Simple Notification Service"></a>Simple Notification Service</h4><p>This is an option if you wish to get the warning notification elsewhere, SMS for example.</p>
-<h5 id="Create-Topic"><a href="#Create-Topic" class="headerlink" title="Create Topic"></a>Create Topic</h5><h5 id="Edit-Topic-Policy"><a href="#Edit-Topic-Policy" class="headerlink" title="Edit Topic Policy"></a>Edit Topic Policy</h5><h5 id="Subscript-to-Topic"><a href="#Subscript-to-Topic" class="headerlink" title="Subscript to Topic"></a>Subscript to Topic</h5><h3 id="other-not-using-fast-ai-AMI"><a href="#other-not-using-fast-ai-AMI" class="headerlink" title="(other) not using fast.ai AMI"></a>(other) not using fast.ai AMI</h3><p>You’ll need to install all the packages and set the environment courself. I am using the fast.ai AMI, so I don’t need this yet. </p>
-<p>Here is a link <a href="http://www.diegoacuna.me/installing-cuda-8-on-ubuntu-16-04/">http://www.diegoacuna.me/installing-cuda-8-on-ubuntu-16-04/</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># install python3, numpy, jupyter, scipy, and matplotlib...</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python3-pip</span><br><span class="line"><span class="built_in">export</span> LC_ALL=C</span><br><span class="line">sudo -H pip3 install pip --upgrade</span><br><span class="line">sudo -H pip3 install numpy jupyter scipy matplotlib</span><br><span class="line">sudo apt-get install emacs24</span><br><span class="line"><span class="comment"># install pytorch</span></span><br><span class="line"></span><br><span class="line">sudo reboot</span><br><span class="line">nvcc --version</span><br></pre></td></tr></table></figure>
-<p><a href="https://thepcspy.com/read/making-ssh-secure/">https://thepcspy.com/read/making-ssh-secure/</a></p>
-]]></content>
       <tags>
-        <tag>data science</tag>
+        <tag>coding</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Create gif to illustrate algorithms with Microsoft PowerPoint</title>
-    <url>/posts/use-gif-to-illustrate-algorithm-with-powerpoint/</url>
-    <content><![CDATA[<p class="description">Animate the algorithm development with gif pictures made with Microsoft PowerPoint!</p>
-
-<img src="/images/animation_with_ppt/dp_animation.gif" />
-
-
-<a id="more"></a>
-
-
-<p>This morning, I was trying to solve a dynamic programming problem and visualize the process with a table. It suddenly came to me that I can animate the process with a gif. My first thought was to use Adobe AI, then after I opened the application, I ran into the first problem: draw a table! Obviously I am not expert of Adobe Illustrator, I don’t even draw or paint decently! The next thing that came into my mind is PowerPoint. Right, the ultimate solution for all animations.</p>
-<p>I have seen people recreate Apple ads videos <strong>Designed by apple in california</strong> <a href="https://youtu.be/kyQfye4vAQ8">original video on YouTube</a> and then the 108 second one with powerpoints, and it was stunning. Since then I knew how powerful PowerPoint can be, and I actually created a campaign video for my friend in their L’Oreal Campus Challenge with PowerPoint. But it takes time. What I am about to do next is way simpler, my purpose of writing the post is simply to show a possibility. If you have a easier or faster way, please comment and tell me about it! I’d love to learn more.</p>
-<iframe height=498 width=510 src='http://player.youku.com/embed/XNjk1ODc5MTYw' frameborder=0 'allowfullscreen'></iframe>
-
-
-
-<h2 id="A-few-questions-up-front"><a href="#A-few-questions-up-front" class="headerlink" title="A few questions up front"></a>A few questions up front</h2><ol>
-<li><p>How do I get .gif from .pptx?</p>
-<p>Two ways, both are straightforward and free! (You need subscription for Microsoft Office 365 though)</p>
-<p>a. Export the slides as a video file (.mp4 or .mov), then convert it to a gif.</p>
-<p>b. Export the slides as individual pictures, each frame corresponding to one image, and then concatenate them into a gif file.</p>
-</li>
-<li><p>Why would I choose PowerPoint over AI?</p>
-<p>First, if you don’t have or are not familiar with AI and other design apps. PowerPoint would save you from the learning curve. (I assume everyone has made slides before.)</p>
-<p>Second, it is actually easier to draw diagrams and tables as needed in an algorithm visualization because that’s what powerpoint is designed for.</p>
-<p>Third, the derivation of answers is discreet, so ppt animations are great for the purpose. (In the latest version fo PowerPoint, the animation will help animate the transitions too.)</p>
-</li>
-<li><p>What do I need to know about powerpoint?</p>
-<p>Only the Basics. No extra package needed. Insert a special symbol. Change the color and size of a box. Add an animation. That’s it. </p>
-<p>Trust me, I have been playing with PowerPoint animations since 4-th grade, remember the built-in clip art? Those are my childhood memories. The only thing you need is a bit of patience. </p>
-</li>
-</ol>
-<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>So the example I used is a dynamic progrmming problem, where a ski Resort tries to assign the most close size of skis to skiers. The program measures disparity by summing up the absolute value of differences between the heights of customer and the size of ski boards. The goal is to minimize the disparity. (In this problem the resort always has enough number of boards for all customers m&gt;=n). I will not go into the details here.</p>
-<p>What I want to create is a 6x7 table, with animation showing how the table is filled out step by step. I will use arrows to show how one answer leads to another in the recursion steps. On the side, The corresponding pseudo-code will show as the arrows and numbers appear.</p>
-<p>I took it straight from my homework, so credit to my algorithm course instructor Eric. Hopefully no one from my class will see my solution before the deadline of the assignment.</p>
-<p>Here I want to make a classic dynamic programming table with a test case:</p>
-<blockquote>
-<p>Skier Height = [63, 65, 67, 69, 71]<br>SKi Height = [60, 64, 66, 68, 70, 80]</p>
-</blockquote>
-<h3 id="Make-Grid"><a href="#Make-Grid" class="headerlink" title="Make Grid"></a>Make Grid</h3><p>I start by drawing out the boxes and legend with Table, Shape, and Text Box. Then I grouped the shapes, for easier management.</p>
-<p><img src="/images/animation_with_ppt/1makegrid.png" alt="1makegrid"></p>
-<p>If you have OCD, you might notice that the numbers are not perfectly aligned. I don’t need to, it takes too long to manually align them. I only need to align them with the <code>Arrange</code> toolbox after I am done. </p>
-<p><img src="/images/animation_with_ppt/2group.png" alt="2group"></p>
-<h3 id="Object-Arrangement"><a href="#Object-Arrangement" class="headerlink" title="Object Arrangement"></a>Object Arrangement</h3><p>In fact, I don’t even need to put each number above the correct column. <code>Arrangement</code> is going to handle them all.</p>
-<p>In the following example, I want to add a letter <code>B</code>  to the top-right corner of the cell in the first row to indicate they are the basecase cells.</p>
-<p>What I did was:</p>
-<ol>
-<li>Create a text box <code>B</code>, <code>⌘-c ⌘-v</code> it 6 times. </li>
-<li>Put the first and the last one it the right place. </li>
-<li>Arrange - Align - Distribute Horizontally</li>
-<li>Arrange - Align - Align Top</li>
-</ol>
-<p><img src="/images/animation_with_ppt/3aBatchalign.png" alt="3aBatchalign"></p>
-<p><img src="/images/animation_with_ppt/3bAlign.png" alt="3bAlign"></p>
-<p><img src="/images/animation_with_ppt/3cAlignresult.png" alt="3cAlignresult"></p>
-<p>Then I repeat the similar stuff for cells in diagonal line. This is the other set of base cases.</p>
-<p><img src="/images/animation_with_ppt/3dAlignAgain.png" alt="3dAlignAgain"></p>
-<h3 id="Select-Pane-Object-Management"><a href="#Select-Pane-Object-Management" class="headerlink" title="Select Pane - Object Management"></a>Select Pane - Object Management</h3><p>By now, I have finished my first steps of my algorithm. I want to create some animations. I want the first test cases to show simutaneously, so I grouped them. To see what objects I have so far, I opened the Selection Pane from the Format tab. </p>
-<p><img src="/images/animation_with_ppt/4aSelectPane.png" alt="4aSelectPane"></p>
-<p>The boxes were a product of copy and paste, so they have pretty bad names. This will make the Animation Pane a mess and impossible to work with (when you have more animations and objects on the canvas). So I renamed them.</p>
-<p><img src="/images/animation_with_ppt/4bObjectRename.png" alt="4bObjectRename"></p>
-<p>Now the Animation Pane is a pleasure to the eye. (Same thing for writing readable codes, right?)</p>
-<p><img src="/images/animation_with_ppt/5Animation.png" alt="5Animation"></p>
-<h3 id="Operating-on-layers"><a href="#Operating-on-layers" class="headerlink" title="Operating on layers"></a>Operating on layers</h3><p>If you are a Photoshop user, you must be familar with the concept of layers. With layers, you can work on part of the images and not mess up other parts. With Selection Pane, you can do the same thing.</p>
-<p>My next step is to add small arrows to connect cells, I just need to dupliate 6 small arrows and do the same object arrangement tricks again. So I made 6 arrows, put the first one and last one in place. But here comes a new problem. With all these numbers and subscripts each being independent text boxes, it can be really hard for me to select only the arrows.</p>
-<p>I open the selection pane, click hide all, and make only the 6 arrows visible. Select All, Arrange, Distribute, Done! Effortless.</p>
-<p><img src="/images/animation_with_ppt/6TechniqueHideAll.png" alt="6TechniqueHideAll"></p>
-<p>With these arrows selected, I click on Animation to give every element I selected with the same <code>Fade</code>  effect.</p>
-<p><img src="/images/animation_with_ppt/7BatchAnimation.png" alt="7BatchAnimation"></p>
-<p>Before you un-select, remember to change the <code>timing</code> option to be <code>on-click</code> or <code>after previous</code>. The default behavior is to appear together when you create animation for multiple objects.</p>
-<p><img src="/images/animation_with_ppt/8AnimationClick.png" alt="8AnimationClick"></p>
-<p>Let’s see how that goes! (I realized I didn’t need to fill all the zeros so I deleted them.)</p>
-<p><img src="/images/animation_with_ppt/basecase.gif" alt="basecase"></p>
-<h3 id="Divide-and-Conquer"><a href="#Divide-and-Conquer" class="headerlink" title="Divide and Conquer"></a>Divide and Conquer</h3><p>Now that I have finished all the base cases. I need to move on to the recursive steps. The Animation Pane is filled with many boxes. </p>
-<p>It seems like a good time to commit the work and build new features in a new branch. Why don’t wee save the work here and start the next stage somewhere else? The good thing about copying and pasting in PowerPoint is that, the animations is also copied. So I only need to work on additional features in a new slide, and copy it back after I have finished testing it.</p>
-<p>I duplicate the the canvas, remove the animations from previous page, and start working on new features.</p>
-<p>Two more steps: 1. add the arrow for recursive calls; 2. calculate the disparity in the return expression. Two more canvas.</p>
-<p><img src="/images/animation_with_ppt/9aSplitPane.png" alt="9aSplitPane"></p>
-<p><img src="/images/animation_with_ppt/9bSplitPane.png" alt="9bSplitPane"></p>
-<p><img src="/images/animation_with_ppt/9cSplitPane.png" alt="9cSplitPane"></p>
-<p>I can now work on different features in different pages. Even when I need to modify the features in previous pages, I do not need to copy the change into later slides. Sounds pretty git, huh.</p>
-<p>When I was editing the new pages, I went back and changed the arrow colors, added some more words. When I copy the new arrows back later, all I need to do is to select the new feature in the Selection Pane, and put them in the right places.</p>
-<p>Most likely, the animations will be appended to the end of the animations flow.</p>
-<p><img src="/images/animation_with_ppt/10aMerge.png" alt="10aMerge"></p>
-<p><img src="/images/animation_with_ppt/10bMerge.png" alt="10bMerge"></p>
-<p>Then I just changed the duration of each animation to make sure it is not too fast.</p>
-<p><img src="/images/animation_with_ppt/11AdjustAnimation.png" alt="11AdjustAnimation"></p>
-<h2 id="See-the-work"><a href="#See-the-work" class="headerlink" title="See the work!"></a>See the work!</h2><p>Use the <code>Export - As video</code> to get the .mp4 file. Then google <code>convert mp4 to gif</code>, you’ll see a whole page of free online tools. </p>
-<p>Now it’s time to show off your work! </p>
-<p><img src="/images/animation_with_ppt/dp_animation.gif" alt="dp_animation"></p>
-]]></content>
   </entry>
   <entry>
     <title>Internship Weekly Review</title>
@@ -495,7 +308,204 @@
 </ol>
 ]]></content>
       <tags>
-        <tag>Summary</tag>
+        <tag>summary</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Create gif to illustrate algorithms with Microsoft PowerPoint</title>
+    <url>/posts/use-gif-to-illustrate-algorithm-with-powerpoint/</url>
+    <content><![CDATA[<p class="description">Animate the algorithm development with gif pictures made with Microsoft PowerPoint!</p>
+
+<img src="/images/animation_with_ppt/dp_animation.gif" />
+
+
+<a id="more"></a>
+
+
+<p>This morning, I was trying to solve a dynamic programming problem and visualize the process with a table. It suddenly came to me that I can animate the process with a gif. My first thought was to use Adobe AI, then after I opened the application, I ran into the first problem: draw a table! Obviously I am not expert of Adobe Illustrator, I don’t even draw or paint decently! The next thing that came into my mind is PowerPoint. Right, the ultimate solution for all animations.</p>
+<p>I have seen people recreate Apple ads videos <strong>Designed by apple in california</strong> <a href="https://youtu.be/kyQfye4vAQ8">original video on YouTube</a> and then the 108 second one with powerpoints, and it was stunning. Since then I knew how powerful PowerPoint can be, and I actually created a campaign video for my friend in their L’Oreal Campus Challenge with PowerPoint. But it takes time. What I am about to do next is way simpler, my purpose of writing the post is simply to show a possibility. If you have a easier or faster way, please comment and tell me about it! I’d love to learn more.</p>
+<iframe height=498 width=510 src='http://player.youku.com/embed/XNjk1ODc5MTYw' frameborder=0 'allowfullscreen'></iframe>
+
+
+
+<h2 id="A-few-questions-up-front"><a href="#A-few-questions-up-front" class="headerlink" title="A few questions up front"></a>A few questions up front</h2><ol>
+<li><p>How do I get .gif from .pptx?</p>
+<p>Two ways, both are straightforward and free! (You need subscription for Microsoft Office 365 though)</p>
+<p>a. Export the slides as a video file (.mp4 or .mov), then convert it to a gif.</p>
+<p>b. Export the slides as individual pictures, each frame corresponding to one image, and then concatenate them into a gif file.</p>
+</li>
+<li><p>Why would I choose PowerPoint over AI?</p>
+<p>First, if you don’t have or are not familiar with AI and other design apps. PowerPoint would save you from the learning curve. (I assume everyone has made slides before.)</p>
+<p>Second, it is actually easier to draw diagrams and tables as needed in an algorithm visualization because that’s what powerpoint is designed for.</p>
+<p>Third, the derivation of answers is discreet, so ppt animations are great for the purpose. (In the latest version fo PowerPoint, the animation will help animate the transitions too.)</p>
+</li>
+<li><p>What do I need to know about powerpoint?</p>
+<p>Only the Basics. No extra package needed. Insert a special symbol. Change the color and size of a box. Add an animation. That’s it. </p>
+<p>Trust me, I have been playing with PowerPoint animations since 4-th grade, remember the built-in clip art? Those are my childhood memories. The only thing you need is a bit of patience. </p>
+</li>
+</ol>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>So the example I used is a dynamic progrmming problem, where a ski Resort tries to assign the most close size of skis to skiers. The program measures disparity by summing up the absolute value of differences between the heights of customer and the size of ski boards. The goal is to minimize the disparity. (In this problem the resort always has enough number of boards for all customers m&gt;=n). I will not go into the details here.</p>
+<p>What I want to create is a 6x7 table, with animation showing how the table is filled out step by step. I will use arrows to show how one answer leads to another in the recursion steps. On the side, The corresponding pseudo-code will show as the arrows and numbers appear.</p>
+<p>I took it straight from my homework, so credit to my algorithm course instructor Eric. Hopefully no one from my class will see my solution before the deadline of the assignment.</p>
+<p>Here I want to make a classic dynamic programming table with a test case:</p>
+<blockquote>
+<p>Skier Height = [63, 65, 67, 69, 71]<br>SKi Height = [60, 64, 66, 68, 70, 80]</p>
+</blockquote>
+<h3 id="Make-Grid"><a href="#Make-Grid" class="headerlink" title="Make Grid"></a>Make Grid</h3><p>I start by drawing out the boxes and legend with Table, Shape, and Text Box. Then I grouped the shapes, for easier management.</p>
+<p><img src="/images/animation_with_ppt/1makegrid.png" alt="1makegrid"></p>
+<p>If you have OCD, you might notice that the numbers are not perfectly aligned. I don’t need to, it takes too long to manually align them. I only need to align them with the <code>Arrange</code> toolbox after I am done. </p>
+<p><img src="/images/animation_with_ppt/2group.png" alt="2group"></p>
+<h3 id="Object-Arrangement"><a href="#Object-Arrangement" class="headerlink" title="Object Arrangement"></a>Object Arrangement</h3><p>In fact, I don’t even need to put each number above the correct column. <code>Arrangement</code> is going to handle them all.</p>
+<p>In the following example, I want to add a letter <code>B</code>  to the top-right corner of the cell in the first row to indicate they are the basecase cells.</p>
+<p>What I did was:</p>
+<ol>
+<li>Create a text box <code>B</code>, <code>⌘-c ⌘-v</code> it 6 times. </li>
+<li>Put the first and the last one it the right place. </li>
+<li>Arrange - Align - Distribute Horizontally</li>
+<li>Arrange - Align - Align Top</li>
+</ol>
+<p><img src="/images/animation_with_ppt/3aBatchalign.png" alt="3aBatchalign"></p>
+<p><img src="/images/animation_with_ppt/3bAlign.png" alt="3bAlign"></p>
+<p><img src="/images/animation_with_ppt/3cAlignresult.png" alt="3cAlignresult"></p>
+<p>Then I repeat the similar stuff for cells in diagonal line. This is the other set of base cases.</p>
+<p><img src="/images/animation_with_ppt/3dAlignAgain.png" alt="3dAlignAgain"></p>
+<h3 id="Select-Pane-Object-Management"><a href="#Select-Pane-Object-Management" class="headerlink" title="Select Pane - Object Management"></a>Select Pane - Object Management</h3><p>By now, I have finished my first steps of my algorithm. I want to create some animations. I want the first test cases to show simutaneously, so I grouped them. To see what objects I have so far, I opened the Selection Pane from the Format tab. </p>
+<p><img src="/images/animation_with_ppt/4aSelectPane.png" alt="4aSelectPane"></p>
+<p>The boxes were a product of copy and paste, so they have pretty bad names. This will make the Animation Pane a mess and impossible to work with (when you have more animations and objects on the canvas). So I renamed them.</p>
+<p><img src="/images/animation_with_ppt/4bObjectRename.png" alt="4bObjectRename"></p>
+<p>Now the Animation Pane is a pleasure to the eye. (Same thing for writing readable codes, right?)</p>
+<p><img src="/images/animation_with_ppt/5Animation.png" alt="5Animation"></p>
+<h3 id="Operating-on-layers"><a href="#Operating-on-layers" class="headerlink" title="Operating on layers"></a>Operating on layers</h3><p>If you are a Photoshop user, you must be familar with the concept of layers. With layers, you can work on part of the images and not mess up other parts. With Selection Pane, you can do the same thing.</p>
+<p>My next step is to add small arrows to connect cells, I just need to dupliate 6 small arrows and do the same object arrangement tricks again. So I made 6 arrows, put the first one and last one in place. But here comes a new problem. With all these numbers and subscripts each being independent text boxes, it can be really hard for me to select only the arrows.</p>
+<p>I open the selection pane, click hide all, and make only the 6 arrows visible. Select All, Arrange, Distribute, Done! Effortless.</p>
+<p><img src="/images/animation_with_ppt/6TechniqueHideAll.png" alt="6TechniqueHideAll"></p>
+<p>With these arrows selected, I click on Animation to give every element I selected with the same <code>Fade</code>  effect.</p>
+<p><img src="/images/animation_with_ppt/7BatchAnimation.png" alt="7BatchAnimation"></p>
+<p>Before you un-select, remember to change the <code>timing</code> option to be <code>on-click</code> or <code>after previous</code>. The default behavior is to appear together when you create animation for multiple objects.</p>
+<p><img src="/images/animation_with_ppt/8AnimationClick.png" alt="8AnimationClick"></p>
+<p>Let’s see how that goes! (I realized I didn’t need to fill all the zeros so I deleted them.)</p>
+<p><img src="/images/animation_with_ppt/basecase.gif" alt="basecase"></p>
+<h3 id="Divide-and-Conquer"><a href="#Divide-and-Conquer" class="headerlink" title="Divide and Conquer"></a>Divide and Conquer</h3><p>Now that I have finished all the base cases. I need to move on to the recursive steps. The Animation Pane is filled with many boxes. </p>
+<p>It seems like a good time to commit the work and build new features in a new branch. Why don’t wee save the work here and start the next stage somewhere else? The good thing about copying and pasting in PowerPoint is that, the animations is also copied. So I only need to work on additional features in a new slide, and copy it back after I have finished testing it.</p>
+<p>I duplicate the the canvas, remove the animations from previous page, and start working on new features.</p>
+<p>Two more steps: 1. add the arrow for recursive calls; 2. calculate the disparity in the return expression. Two more canvas.</p>
+<p><img src="/images/animation_with_ppt/9aSplitPane.png" alt="9aSplitPane"></p>
+<p><img src="/images/animation_with_ppt/9bSplitPane.png" alt="9bSplitPane"></p>
+<p><img src="/images/animation_with_ppt/9cSplitPane.png" alt="9cSplitPane"></p>
+<p>I can now work on different features in different pages. Even when I need to modify the features in previous pages, I do not need to copy the change into later slides. Sounds pretty git, huh.</p>
+<p>When I was editing the new pages, I went back and changed the arrow colors, added some more words. When I copy the new arrows back later, all I need to do is to select the new feature in the Selection Pane, and put them in the right places.</p>
+<p>Most likely, the animations will be appended to the end of the animations flow.</p>
+<p><img src="/images/animation_with_ppt/10aMerge.png" alt="10aMerge"></p>
+<p><img src="/images/animation_with_ppt/10bMerge.png" alt="10bMerge"></p>
+<p>Then I just changed the duration of each animation to make sure it is not too fast.</p>
+<p><img src="/images/animation_with_ppt/11AdjustAnimation.png" alt="11AdjustAnimation"></p>
+<h2 id="See-the-work"><a href="#See-the-work" class="headerlink" title="See the work!"></a>See the work!</h2><p>Use the <code>Export - As video</code> to get the .mp4 file. Then google <code>convert mp4 to gif</code>, you’ll see a whole page of free online tools. </p>
+<p>Now it’s time to show off your work! </p>
+<p><img src="/images/animation_with_ppt/dp_animation.gif" alt="dp_animation"></p>
+]]></content>
+      <tags>
+        <tag>visulization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Setting Up AWS for Data Mining (and jupyter notebooks)</title>
+    <url>/posts/setting-up-AWS-for-data-mining/</url>
+    <content><![CDATA[<p class="description">My experience of setting up deep learning environment on AWS, including how to create an instance, keep the data aftering you shut it down, set up budget warning and edit your file on the server without being charged.</p>
+
+<a id="more"></a>
+
+<h3 id="Set-up-AWS-account"><a href="#Set-up-AWS-account" class="headerlink" title="Set up AWS account"></a>Set up AWS account</h3><p>Go to <a href="https://aws.amazon.com/">https://aws.amazon.com</a> and set up your account</p>
+<blockquote>
+<p><strong>Tips</strong>: If you are a student, you may check <a href="https://aws.amazon.com/education/awseducate/">AWS Educate</a> and see if you’re eligible for $100.</p>
+<p>It may take a few days for Amazon to confirm school info and send the promo code.</p>
+</blockquote>
+<h3 id="THE-EASY-WAY-for-spot-instance"><a href="#THE-EASY-WAY-for-spot-instance" class="headerlink" title="THE EASY WAY (for spot instance)"></a>THE EASY WAY (for spot instance)</h3><p>fast.ai provides scripts to automate the whole process.</p>
+<p><a href="http://wiki.fast.ai/index.php/AWS_Spot_instances">AWS Spot instances Tutorial</a></p>
+<h4 id="Initialization-Only-done-once"><a href="#Initialization-Only-done-once" class="headerlink" title="Initialization (Only done once)"></a>Initialization (Only done once)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install jq</span><br><span class="line">git <span class="built_in">clone</span> --depth=1 https://github.com/slavivanov/ec2-spotter.git</span><br></pre></td></tr></table></figure>
+<h5 id="Create-an-Instance"><a href="#Create-an-Instance" class="headerlink" title="Create an Instance"></a>Create an Instance</h5><ul>
+<li>ami —Depending on which region we have picked and whether we want to use Fast.ai image or the Amazon one, we need to select an image <em>(Amazon images below are updated to version 1.3 from April 2017)</em>:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Region/Provider</th>
+<th>Fast.ai</th>
+<th>Amazon</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>us-east-1</td>
+<td>ami-31ecfb26</td>
+<td>ami-fb8e19ed</td>
+</tr>
+<tr>
+<td>us-west-2</td>
+<td>ami-bc508adc</td>
+<td>ami-638c1e03</td>
+</tr>
+<tr>
+<td>eu-west-1</td>
+<td>ami-b43d1ec7</td>
+<td>ami-c5afaaa3</td>
+</tr>
+</tbody></table>
+<ul>
+<li>subnetId — Use the subnet ID that create_vpc.sh printed.</li>
+</ul>
+<ul>
+<li>securityGroupId — Use the security group ID that create_vpc.sh printed.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. ec2-spotter/fast_ai/create_vpc.sh</span><br><span class="line">. ec2-spotter/fast_ai/start_spot_no_swap.sh --ami ami-53b23433 --subnetId subnet-9f69c3d6 --securityGroupId sg-a62f2ede</span><br><span class="line"><span class="comment"># instance_ip seen in the output</span></span><br><span class="line">instance_ip=instance_ip_from_previous_step</span><br><span class="line">ssh -i ~/.ssh/aws-key-fast-ai.pem ubuntu@<span class="variable">$instance_ip</span></span><br></pre></td></tr></table></figure>
+<h5 id="Detach-the-volume-and-make-it-permanent"><a href="#Detach-the-volume-and-make-it-permanent" class="headerlink" title="Detach the volume and make it permanent"></a>Detach the volume and make it permanent</h5><p>The script will also terminate the instance from Step 1</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh ec2-spotter/fast_ai/config_from_instance.sh</span><br></pre></td></tr></table></figure>
+<p>Once you see the message, it is done.</p>
+<h4 id="Launch-an-instance-whenever-you-need-one"><a href="#Launch-an-instance-whenever-you-need-one" class="headerlink" title="Launch an instance (whenever you need one)"></a>Launch an instance (whenever you need one)</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sh fast_ai/start_spot.sh</span><br></pre></td></tr></table></figure>
+<p>Wait until the <code>Initializing</code> disappears from status-checks tag on Instances panel.</p>
+<h5 id="Connect"><a href="#Connect" class="headerlink" title="Connect"></a>Connect</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -i YOUR-KEY.pem ubuntu@YOUR-PUBLIC-DNS -L8888:localhost:8888  </span><br></pre></td></tr></table></figure>
+<h5 id="Terminate-the-instance"><a href="#Terminate-the-instance" class="headerlink" title="Terminate the instance"></a>Terminate the instance</h5><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Change $instance_id to your instance id obviously.</span></span><br><span class="line">aws ec2 terminate-instances --instance-ids <span class="variable">$instance_id</span></span><br></pre></td></tr></table></figure>
+<p>This is by far the most effortless way to set up an AWS</p>
+<hr>
+<p>If you want do more customization, then you can manually set it up.</p>
+<h3 id="Create-Instance"><a href="#Create-Instance" class="headerlink" title="Create Instance"></a>Create Instance</h3><p><a href="http://wiki.fast.ai/index.php/AWS_install">http://wiki.fast.ai/index.php/AWS_install</a> fast.ai’s tutorial on setting up AWS, it provides some <a href="https://github.com/fastai/courses/tree/master/setup">scripts</a> to simplify the steps to launch your AWS. It also gives solutions to common problems when trying to set up AWS server.</p>
+<p><a href="http://forums.fast.ai/t/great-summary-of-how-to-use-aws/7651">http://forums.fast.ai/t/great-summary-of-how-to-use-aws/7651</a> A clear instruction to help set up AWS server and run jupyter notebooks.</p>
+<p>The standard choice is to launch an instance on the EC2 tag. But a more budget-friendly choice is to launch a spot instance. </p>
+<p>Later, <a href="#Keep-the-AMI-running-switch-to-t2-micro">this chapter</a> will cover how to combine some of choices the to save money.</p>
+<h4 id="Spot-Instance"><a href="#Spot-Instance" class="headerlink" title="Spot Instance"></a>Spot Instance</h4><p><a href="https://aws.amazon.com/ec2/spot/">https://aws.amazon.com/ec2/spot/</a></p>
+<h4 id="500h-Free-Tier"><a href="#500h-Free-Tier" class="headerlink" title="500h Free Tier"></a>500h Free Tier</h4><p><a href="https://aws.amazon.com/free/faqs/?ft=n">t2-micro instance</a></p>
+<h3 id="Run-your-instance"><a href="#Run-your-instance" class="headerlink" title="Run your instance"></a>Run your instance</h3><p>Find following instructions by clicking <code>Connect</code> in the <code>Instances</code> panel.</p>
+<p>To access your instance:</p>
+<ol>
+<li>Open an SSH client, you can use Terminal on Mac OS.</li>
+<li>Rename your private key file from <code>your_key.pem.txt</code> to <code>your_key.pem</code>, and move to desired position. The wizard automatically detects the key you used to launch the instance.</li>
+<li>Your key must not be publicly viewable for SSH to work. Use this command if needed:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chmod 400 YOUR-KEY.pem</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>Connect to your instance using its Public DNS:</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -i YOUR-KEY.pem ubuntu@YOUR-PUBLIC-DNS -L8888:localhost:8888  </span><br></pre></td></tr></table></figure>
+<p>YOUR-PUBLIC-DNS can be found at <code>EC2</code> - <code>Instances</code> panel, click <code>connect</code>.</p>
+<h3 id="Using-fast-ai-AMI"><a href="#Using-fast-ai-AMI" class="headerlink" title="Using fast.ai AMI"></a>Using fast.ai AMI</h3><p>keep updated</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> fastai</span><br><span class="line">git pull</span><br><span class="line">conda env update <span class="comment"># once a month</span></span><br></pre></td></tr></table></figure>
+<p>check for status</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span> python</span><br><span class="line">python --version</span><br><span class="line">pip list --format=legacy</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Persistent-Volume"><a href="#Persistent-Volume" class="headerlink" title="Persistent Volume"></a>Persistent Volume</h3><p><a href="http://wiki.fast.ai/index.php/AWS_Spot_instances">AWS Spot instances Tutorial</a></p>
+<p>Spot instance is a budget friendly choice. One downside about AWS spot instance is that, once you shut down the instance, everything gets lost. The tutorial provides two ways to solve the problem, the first is to create an external EBS volume, the second is to swap root volume. My personal preference is the second one. See comparison and details in the link.</p>
+<h3 id="Keep-the-AMI-running-with-lower-cost"><a href="#Keep-the-AMI-running-with-lower-cost" class="headerlink" title="Keep the AMI running (with lower cost)"></a>Keep the AMI running (with lower cost)</h3><p><a href="http://forums.fast.ai/t/switching-between-free-t2-micro-and-paid-p2-xlarge-on-aws/7116/15">Tutorial</a></p>
+<p>If you want to be able to edit file on the server, but do not wish to pay for the GPU which you are not using, one option is to switch to free t2-micro temporarily.</p>
+<p>Not fulfilled yet.</p>
+<h3 id="Budget-Warning"><a href="#Budget-Warning" class="headerlink" title="Budget Warning"></a>Budget Warning</h3><h4 id="Create-Budget"><a href="#Create-Budget" class="headerlink" title="Create Budget"></a>Create Budget</h4><p><code>Billing</code> -&gt; <code>Dashboard</code> - <code>Budgets</code> -&gt; <code>Create Budgets</code></p>
+<h4 id="Simple-Notification-Service"><a href="#Simple-Notification-Service" class="headerlink" title="Simple Notification Service"></a>Simple Notification Service</h4><p>This is an option if you wish to get the warning notification elsewhere, SMS for example.</p>
+<h5 id="Create-Topic"><a href="#Create-Topic" class="headerlink" title="Create Topic"></a>Create Topic</h5><h5 id="Edit-Topic-Policy"><a href="#Edit-Topic-Policy" class="headerlink" title="Edit Topic Policy"></a>Edit Topic Policy</h5><h5 id="Subscript-to-Topic"><a href="#Subscript-to-Topic" class="headerlink" title="Subscript to Topic"></a>Subscript to Topic</h5><h3 id="other-not-using-fast-ai-AMI"><a href="#other-not-using-fast-ai-AMI" class="headerlink" title="(other) not using fast.ai AMI"></a>(other) not using fast.ai AMI</h3><p>You’ll need to install all the packages and set the environment courself. I am using the fast.ai AMI, so I don’t need this yet. </p>
+<p>Here is a link <a href="http://www.diegoacuna.me/installing-cuda-8-on-ubuntu-16-04/">http://www.diegoacuna.me/installing-cuda-8-on-ubuntu-16-04/</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># install python3, numpy, jupyter, scipy, and matplotlib...</span></span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python3-pip</span><br><span class="line"><span class="built_in">export</span> LC_ALL=C</span><br><span class="line">sudo -H pip3 install pip --upgrade</span><br><span class="line">sudo -H pip3 install numpy jupyter scipy matplotlib</span><br><span class="line">sudo apt-get install emacs24</span><br><span class="line"><span class="comment"># install pytorch</span></span><br><span class="line"></span><br><span class="line">sudo reboot</span><br><span class="line">nvcc --version</span><br></pre></td></tr></table></figure>
+<p><a href="https://thepcspy.com/read/making-ssh-secure/">https://thepcspy.com/read/making-ssh-secure/</a></p>
+]]></content>
+      <tags>
+        <tag>data science</tag>
+        <tag>tutorial</tag>
       </tags>
   </entry>
   <entry>
@@ -546,5 +556,9 @@
 <li>Q&amp;As<br><a href="https://stormpath.com/blog/token-auth-spa">Token Based Authentication for Single Page Apps (SPAs)</a><br><a href="https://blog.risingstack.com/web-authentication-methods-explained/">Web Authentication Methods Explained | RisingStack</a><br><a href="https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/">Refresh Tokens: When to Use Them and How They Interact with JWTs</a><br><a href="https://stackoverflow.com/questions/233507/how-to-log-out-user-from-web-site-using-basic-authentication">http - How to log out user from web site using BASIC authentication? - Stack Overflow</a><br><a href="https://blog.risingstack.com/node-js-security-checklist/">Node.js Security Checklist | @RisingStack</a><br>Error Handling</li>
 </ul>
 ]]></content>
+      <tags>
+        <tag>web development</tag>
+        <tag>tutorial</tag>
+      </tags>
   </entry>
 </search>
